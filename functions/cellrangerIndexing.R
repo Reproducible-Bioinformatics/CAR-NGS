@@ -9,7 +9,7 @@
 #' @param bio.type, ENSEMBL biotype to filter the GTF
 #' @param nThreads, number of cores for parallelization
 #' @param version,  cellranger version: 2, 3 or 5.
-#' @author Luca Alessandrì
+#' @author Luca Alessandrì, Sebastian Bucatariu, Agata D'Onofrio
 #'
 #'
 #' @return an indexed genome compliant with 10XGenomics cellranger
