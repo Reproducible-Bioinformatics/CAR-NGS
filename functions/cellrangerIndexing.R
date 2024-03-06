@@ -148,7 +148,7 @@ cellrangerIndexing <- function(group=c("sudo","docker"),scratch.folderDOCKER, sc
     }
 
   #saving log and removing docker container
-  container.id <- readLines(paste(genomeFolder,"/dockerID", sep=""), warn = FALSE)
+  container.id <- readLines(paste(genomeFolder,"/", dockerID_name, sep=""), warn = FALSE)
   file.copy(paste("docker logs ", substr(container.id,1,12), " &> "),paste(genomeFolder,"\\", substr(container.id,1,12),".log", sep=""))
   file.copy(paste("docker rm "),paste(container.id, sep=""))
 
