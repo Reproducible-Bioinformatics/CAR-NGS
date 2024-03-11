@@ -31,11 +31,9 @@
 tsneBootstrap <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file, nPerm, permAtTime, percent, range1, range2, separator, logTen=0, seed=111, sp=0.8, clusterPermErr=0.05, perplexity=10){
 
   isDocker <- is_running_in_docker()
-
     if (isDocker == TRUE){
     scratch.folderHOST <- gsub("\\\\", "/", scratch.folderHOST)
     }
-
     if(isDocker == FALSE){
    scratch.folderDOCKER=scratch.folderHOST
    }
