@@ -19,26 +19,26 @@
 #' @export
 dimensions <- function(group=c("sudo","docker"), scratch.folderHOST,scratch.folderDOCKER, file, separator){
 
+#creating the data.folder and other variables
 data.folder=dirname(file)
 positions=length(strsplit(basename(file),"\\.")[[1]])
 matrixNameC=strsplit(basename(file),"\\.")[[1]]
 matrixName=paste(matrixNameC[seq(1,positions-1)],collapse="")
 format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
-    
-isDocker <- is_running_in_docker()
 
+#checking if the function is running from Docker
 isDocker = is_running_in_docker()
 
     if (isDocker == TRUE){
-      scratch.folderHOST = gsub("\\", "/", scratch.folderHOST)
+      scratch.folderHOST = gsub("\\\\", "/", scratch.folderHOST)
 
-      #creating a HOSTdocker variable for the datafolder
+      #creating a HOSTdocker variable for the data.folder
       host_parts = unlist(strsplit(scratch.folderHOST, "/"))
       docker_parts = unlist(strsplit(scratch.folderDOCKER, "/"))
       matches_path = paste(matches, collapse="/")
       HOSTpath = gsub(matches_path, "", scratch.folderHOST)
 
-      #checking if the datafolder is inside a shared folder
+      #checking if the data.folder is inside a shared folder
       wd_parts = unlist(strsplit(data.folder, "/"))
       dmatches = intersect(docker_parts, wd_parts)
       dmatches_path = paste(dmatches, collapse="/")
@@ -48,11 +48,14 @@ isDocker = is_running_in_docker()
     }
 
     if(isDocker == FALSE){
+      #setting the variables that are unchanged if the function isn't running from docker
       scratch.folderDOCKER = scratch.folderHOST
       data.folderHOST = data.folder
     }
+  
   #running time 1
   ptm <- proc.time()
+    
   #setting the data.folder as working folder
   if (!file.exists(data.folder)){
     cat(paste("\nIt seems that the ",data.folder, " folder does not exist\n"))
@@ -62,7 +65,8 @@ isDocker = is_running_in_docker()
   #storing the position of the home folder
   home <- getwd()
   setwd(data.folder)
-  #initialize status
+  
+  #initialize status creating an ExitStatusFile
   exitStatus <- 0  
   writeLines(as.character(exitStatus), "ExitStatusFile")          
                                   
@@ -71,64 +75,64 @@ isDocker = is_running_in_docker()
   test <- dockerTest()
   if(!test){
     cat("\nERROR: Docker seems not to be installed in your system\n")
-    exitStatus <- 0  
-    writeLines(as.character(exitStatus), "ExitStatusFile")          
+    exitStatus <- 10  
+    writeLines(as.character(exitStatus), "ExitStatusFile")
     setwd(home)
+    return(10)
   }
-
-
 
   #check  if scratch folder exist
   if (!file.exists(scratch.folderDOCKER)){
-    cat(paste("\nIt seems that the ",scratch.folder, " folder does not exist\n"))
-    exitStatus <- 0  
+    cat(paste("\nIt seems that the ",scratch.folderDOCKER, " folder does not exist\n"))
+    exitStatus <- 3  
     writeLines(as.character(exitStatus), "ExitStatusFile")          
-    setwd(data.folder)  
+    setwd(data.folder)
+    return(3)
   }
+
+  #creating a temporary folder and a corresponding host variable
   tmp.folder <- gsub(":","-",gsub(" ","-",date()))
   scrat_tmp.folderHOST=file.path(scratch.folderHOST, tmp.folder)
   scrat_tmp.folderDOCKER=file.path(scratch.folderDOCKER, tmp.folder)
   writeLines(scrat_tmp.folderDOCKER,paste(data.folder,"/tempFolderID", sep=""))
   cat("\ncreating a folder in scratch folder\n")
   dir.create(file.path(scrat_tmp.folderDOCKER))
+  
   #preprocess matrix and copying files
-    
-dockerID_name="dockerID"
-nr_dockerID = 0
-while (file.exists(dockerID_name)){
-    nr_dockerID = nr_dockerID + 1
-    dockerID_name =paste0("dockerID" ,"_", nr_dockerID)
-    } 
+  if(separator=="\t"){
+    separator="tab"
+  }
+  file.copy(paste(data.folder,"/",matrixName,".",format," "),paste(scrat_tmp.folderDOCKER,"/",sep=""))
 
-if(separator=="\t"){
-separator="tab"
-}
-
-file.copy(paste(data.folder,"/",matrixName,".",format," "),paste(scrat_tmp.folderDOCKER,"/",sep=""))
-
+  #creating a dockerID file    
+  dockerID_name="dockerID"
+  nr_dockerID = 0
+  while (file.exists(dockerID_name)){
+      nr_dockerID = nr_dockerID + 1
+      dockerID_name =paste0("dockerID" ,"_", nr_dockerID)
+  } 
 
   #executing the docker job
-    params <- paste("--cidfile ",data.folder,"/", dockerID_name," -v ",scrat_tmp.folderHOST,":/scratch -v ", data.folderHOST, ":/data -d docker.io/repbioinfo/r332.2017.01 Rscript /home/main.R ",matrixName," ",format," ",separator,sep="")
+  params <- paste("--cidfile ",data.folder,"/", dockerID_name," -v ",scrat_tmp.folderHOST,":/scratch -v ", data.folderHOST, ":/data -d docker.io/repbioinfo/r332.2017.01 Rscript /home/main.R ",matrixName," ",format," ",separator,sep="")
 
-resultRun <- runDocker(group=group, params=params)
+  resultRun <- runDocker(group=group, params=params)
 
   #waiting for the end of the container work
   if(resultRun==0){ items <- list.files(scrat_tmp.folderDOCKER)
-          for (item in items) {
-          file.copy(file.path(scrat_tmp.folderDOCKER, item), genomeFolder, recursive = TRUE, overwrite = TRUE)
-        }
     #system(paste("cp ", scrat_tmp.folder, "/* ", data.folder, sep=""))
+    for (item in items) {
+          file.copy(file.path(scrat_tmp.folderDOCKER, item), genomeFolder, recursive = TRUE, overwrite = TRUE)
+        } 
   }
 
   #saving log and removing docker container
   container.id <- readLines(paste(data.folder,"/",dockerID_name, sep=""), warn = FALSE)
-  file.copy(paste("docker logs ", substr(container.id,1,12), " &> "),paste(data.folder,"/", substr(container.id,1,12),".log", sep=""))
-  file.copy(paste("docker rm "),paste(container.id, sep=""))
+  file.copy(paste("docker logs ", substr(container.id,1,12), " &> "), paste(data.folder,"/", substr(container.id,1,12),".log", sep=""))
+  file.copy(paste("docker rm "), paste(container.id, sep=""))
 
 
   #Copy result folder
   cat("Copying Result Folder")
-    
    items <- list.files(scrat_tmp.folder)
     for (item in items) {	
       file.rename(file.path(scrat_tmp.folderDOCKER, item), file.path(data.folder, item))
@@ -137,8 +141,7 @@ resultRun <- runDocker(group=group, params=params)
   #removing temporary folder
   cat("\n\nRemoving the temporary file ....\n")
   unlink(scrat_tmp.folderDOCKER,recursive=TRUE)
-  #system("rm -fR dockerID")
   file.remove(c("tempFolderID"))
-  #system(paste("cp ",paste(path.package(package="rCASC"),"containers/containers.txt",sep="/")," ",data.folder, sep=""))
+   
   setwd(home)
 } 
