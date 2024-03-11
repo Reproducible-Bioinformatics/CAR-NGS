@@ -23,7 +23,8 @@
 #' @export
 csvToSparse <- function(group=c("sudo","docker"),scratch.folderDOCKER,scratch.folderHOST, file, separator){
 
-  data.folder=dirname(file)
+#creating the data.folder and other variables
+data.folder=dirname(file)
 positions=length(strsplit(basename(file),"\\.")[[1]])
 matrixNameC=strsplit(basename(file),"\\.")[[1]]
 matrixName=paste(matrixNameC[seq(1,positions-1)],collapse="")
@@ -52,6 +53,7 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
     }
 
     if(isDocker == FALSE){
+      #setting the variables that are unchanged if the function isn't running from docker
       scratch.folderDOCKER = scratch.folderHOST
       data.folderHOST = data.folder
     }
@@ -59,6 +61,7 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
 
   #running time 1
   ptm <- proc.time()
+  
   #setting the data.folder as working folder
   if (!file.exists(data.folder)){
     cat(paste("\nIt seems that the ",data.folder, " folder does not exist\n"))
@@ -68,8 +71,8 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
   #storing the position of the home folder
   home <- getwd()
   setwd(data.folder)
+  
   #initialize status
-  #system("echo 0 > ExitStatusFile 2>&1")
   exitStatus <- 0    
   writeLines(as.character(exitStatus), "ExitStatusFile")     
 
@@ -77,13 +80,11 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
   test <- dockerTest()
   if(!test){
     cat("\nERROR: Docker seems not to be installed in your system\n")
-    #system("echo 10 > ExitStatusFile 2>&1")
     exitStatus <- 10 
     writeLines(as.character(exitStatus), "ExitStatusFile")          
     setwd(home)     
     return(exitStatus)  
   }
-
 
 
   #check  if scratch folder exist
@@ -95,6 +96,7 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
    return(exitStatus) 
   }
 
+  #creating a temporary folder and a corresponding host variable
   tmp.folder <- gsub(":","-",gsub(" ","-",date()))
   scrat_tmp.folderHOST=file.path(scratch.folderHOST, tmp.folder)
   scrat_tmp.folderDOCKER=file.path(scratch.folderDOCKER, tmp.folder)
@@ -103,34 +105,34 @@ format=strsplit(basename(basename(file)),"\\.")[[1]][positions]
   dir.create(file.path(scrat_tmp.folderDOCKER))
 
   #preprocess matrix and copying files
-    
-dockerID_name="dockerID"
-nr_dockerID = 0
-while (file.exists(dockerID_name)){
+  if(separator=="\t"){
+    separator="tab"
+  }
+  file.copy(paste("cp ",data.folder,"/",matrixName,".",format),paste(scrat_tmp.folder,"/",sep="")) 
+
+  #creating a dockerID file
+  dockerID_name="dockerID"
+  nr_dockerID = 0
+  while (file.exists(dockerID_name)){
     nr_dockerID = nr_dockerID + 1
     dockerID_name =paste0("dockerID" ,"_", nr_dockerID)
-} 
-
-if(separator=="\t"){
-separator="tab"
-}
-
-file.copy(paste("cp ",data.folder,"/",matrixName,".",format),paste(scrat_tmp.folder,"/",sep=""))
+  } 
 
   #executing the docker job
-    params <- paste("--cidfile ",data.folder,"/", dockerID_name," -v ",scrat_tmp.folderHOST,":/scratch -v ", data.folderHOST, ":/data -d docker.io/repbioinfo/mergematrix Rscript /home/main2.R ",matrixName," ",format," ",separator,sep="")
+  params <- paste("--cidfile ",data.folder,"/", dockerID_name," -v ",scrat_tmp.folderHOST,":/scratch -v ", data.folderHOST, ":/data -d docker.io/repbioinfo/mergematrix Rscript /home/main2.R ",matrixName," ",format," ",separator,sep="")
 
-resultRun <- runDocker(group=group, params=params)
+  resultRun <- runDocker(group=group, params=params)
 
   #waiting for the end of the container work
   if(resultRun==0){
+      #system(paste("cp ", scrat_tmp.folder, "/* ", data.folder, sep=""))
       items <- list.files(scrat_tmp.folderDOCKER)
           for (item in items) {
           file.copy(file.path(scrat_tmp.folderDOCKER, item), data.folder, recursive = TRUE, overwrite = TRUE)
         }
     }
-    #system(paste("cp ", scrat_tmp.folder, "/* ", data.folder, sep=""))
-    cat("\nmatrix conversion is finished\n")
+    
+  cat("\nmatrix conversion is finished\n")
 
  
   #saving log and removing docker container
@@ -141,9 +143,8 @@ resultRun <- runDocker(group=group, params=params)
 
   #Copy result folder
   cat("Copying Result Folder")
-
-    items <- list.files(scrat_tmp.folder)
-    for (item in items) {
+  items <- list.files(scrat_tmp.folder)
+  for (item in items) {
       file.rename(file.path(scrat_tmp.folderDOCKER, item), file.path(data.folder, item))
     }
 
