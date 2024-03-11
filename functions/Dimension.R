@@ -1,10 +1,11 @@
 #' @title Cells count table size
 #' @description This function executes a ubuntu docker that counts row and colums of a counts table.
 #' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
-#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param scratch.folderDOCKER, a character string indicating the path of the scratch folder inside the docker
+#' @param scratch.folderHOST, a character string indicating the path of the scratch folder inside the host. If not running from docker, this is the character string that indicates the path of the scratch.folder
 #' @param file, a character string indicating the path of the file, with file name and extension included
 #' @param separator, separator used in count file, e.g. '\\t', ','
-#' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#' @author Luca Alessandri, Sebastian Bucatariu, Agata D'Onofrio
 #'
 #' @return a file called dimensions.txt containing the number of row and columns of a cells counts table
 #' @examples
