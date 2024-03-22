@@ -214,10 +214,10 @@ isDocker <- is_running_in_docker()
   close(fileConn)
   #system(paste("chmod +x ", scrat_tmp.folder,"/script.sh", sep=""))
   script_path <- file.path(scrat_tmp.folderDOCKER, "script.sh")
-  Sys.chmod(script_path, mode = "execute", use_umask = FALSE)
+  Sys.chmod(script_path, mode = "0777", use_umask = FALSE)
 
   #Run docker
-  resultRun <- runDocker(group=group, params=params0)
+  resultRun <- runDocker(group=group, params=params0, dockerID_name)
   #waiting for the end of the container work
   if(resultRun==0){
     file.copy(paste(scrat_tmp.folderDOCKER, "/", id), paste(fastq.folder, sep=""), recursive = TRUE)
