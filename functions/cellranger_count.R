@@ -52,25 +52,28 @@ isDocker <- is_running_in_docker()
     if (isDocker == TRUE){
     scratch.folderHOST <- gsub("\\\\", "/", scratch.folderHOST)
 
-    #creating a HOSTdocker variable for the trascriptome.folder
+    #creating a HOSTdocker variable for the transcriptome.folder
     host_parts = unlist(strsplit(scratch.folderHOST, "/"))
     docker_parts = unlist(strsplit(scratch.folderDOCKER, "/"))
+    matches = intersect(host_parts, docker_parts)
     matches_path = paste(matches, collapse="/")
     HOSTpath = gsub(matches_path, "", scratch.folderHOST)
 
     #checking if the trascriptome.folderHOST is inside a shared folder
-    tr_parts = unlist(strsplit(trascriptome.folder, "/"))
+    tr_parts = unlist(strsplit(transcriptome.folder, "/"))
     tmatches = intersect(docker_parts, tr_parts)
     tmatches_path = paste(tmatches, collapse="/")
-    t_path = gsub(tmatches_path, "", trascriptome.folderHOST)
+    t_path = gsub(tmatches_path, "", transcriptome.folder)
+    t_path0 = substr(t_path, 2, nchar(t_path))
+        
     #creating the variable trascriptome.folderHOST
-    trascriptome.folderHOST = paste(HOSTpath, t_path, sep="")
+    transcriptome.folderHOST = paste(HOSTpath, t_path0, sep="")
     }
 
     if (isDocker == FALSE){
-   scratch.folderDOCKER = scratch.folderHOST
-   trascriptome.folderHOST = trascriptome.folder
-   }
+    scratch.folderDOCKER = scratch.folderHOST
+    transcriptome.folderHOST = transcriptome.folder
+    }
 
 
 
