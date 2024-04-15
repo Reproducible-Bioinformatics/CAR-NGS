@@ -1,7 +1,8 @@
 #' @title Cellranger count
 #' @description This function takes FASTQ files from cellranger mkfastq and performs alignment, filtering, barcode counting, and UMI counting.
 #' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
-#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param scratch.folderDOCKER, a character string indicating the path of the scratch folder inside the docker
+#' @param scratch.folderHOST, a character string indicating the path of the scratch folder inside the host. If not running from docker, this is the character string that indicates the path of the scratch.folder
 #' @param transcriptome.folder,  path to the Cell Ranger compatible transcriptome reference e.g. for a human and mouse mixture sample, use refdata-cellranger-hg19-and-mm10-1.2.0
 #' @param fastq.folder,  path of the fastq path folder in fastq folder the  fastq must have the format SAMPLENAME_S1_L001_R1_001.fastq.gz
 #' @param sample, fastq name, if fastq name is subject1_S1_L001_R1_001.fastq.gz sample is subject1
@@ -48,33 +49,30 @@ cellrangerCount <- function(group=c("sudo","docker"),  transcriptome.folder,  fa
 
 #checking if the function is running from Docker
 isDocker <- is_running_in_docker()
-
-    if (isDocker == TRUE){
+    
+if (isDocker == TRUE){
     scratch.folderHOST <- gsub("\\\\", "/", scratch.folderHOST)
-
     #creating a HOSTdocker variable for the transcriptome.folder
     host_parts = unlist(strsplit(scratch.folderHOST, "/"))
     docker_parts = unlist(strsplit(scratch.folderDOCKER, "/"))
     matches = intersect(host_parts, docker_parts)
     matches_path = paste(matches, collapse="/")
     HOSTpath = gsub(matches_path, "", scratch.folderHOST)
-
     #checking if the trascriptome.folderHOST is inside a shared folder
     tr_parts = unlist(strsplit(transcriptome.folder, "/"))
     tmatches = intersect(docker_parts, tr_parts)
+    tmatches2 = intersect(host_parts, tr_parts)
     tmatches_path = paste(tmatches, collapse="/")
+    tmatches_path2 = paste(tmatches2, collapse="/")
     t_path = gsub(tmatches_path, "", transcriptome.folder)
-    t_path0 = substr(t_path, 2, nchar(t_path))
-        
     #creating the variable trascriptome.folderHOST
-    transcriptome.folderHOST = paste(HOSTpath, t_path0, sep="")
-    }
+    transcriptome.folderHOST = paste(HOSTpath, tmatches_path2, t_path, sep="")
+}
 
-    if (isDocker == FALSE){
+if (isDocker == FALSE){
     scratch.folderDOCKER = scratch.folderHOST
     transcriptome.folderHOST = transcriptome.folder
-    }
-
+}
 
 
   id="results_cellranger"
