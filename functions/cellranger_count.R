@@ -14,7 +14,7 @@
 #' @param lanes,  optional, lanes associated with this sample
 #' @param localcores,  restricts cellranger to use specified number of cores to execute pipeline stages. By default, cellranger will use all of the cores available on your system.
 #' @param localmem,  restricts cellranger to use specified amount of memory, in GB, to execute pipeline stages. By default, cellranger will use 90\% of the memory available on your system. Please note that cellranger requires at least 16 GB of memory to run all pipeline stages.
-#' @param version,  cellranger version: 2, 3 or 5. 
+#' @param version,  cellranger version: 2, 3, 5 or 7. 
 #' @author Greta Romano, romano [dot] greta [at] gmail [dot] com, University of Torino
 #'
 #'
