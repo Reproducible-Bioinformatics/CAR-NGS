@@ -110,7 +110,7 @@ if (isDocker == FALSE){
   test <- dockerTest()
   if(!test){
     cat("\nERROR: Docker seems not to be installed in your system\n")
-    exitStatus <- 0
+    exitStatus <- 10
     writeLines(as.character(exitStatus), "ExitStatusFile")
     setwd(home)
     return(10)
@@ -150,9 +150,7 @@ if (isDocker == FALSE){
   params <- paste("--cidfile ",fastq.folder,"/", dockerID_name," -v ",transcriptome.folderHOST,":/transcr -v ", scrat_tmp.folderHOST, ":/data -d ",dockerImage, " /bin/cellranger count  --id=",id," --transcriptome=/transcr --fastqs=/data", sep="")
 
   if(!is.null(sample)){
-
     params<-paste(params," --sample=",sample, sep="")
-
   }
 
   if (!is.null(expect.cells)){
@@ -202,12 +200,12 @@ if (isDocker == FALSE){
     params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_gene_bc_matrices ",id,".csv", sep="")
   }else if(version=="3"){
     params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id,".csv", sep="")
+  }else if(version=="5"){
+    params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id, ".csv", sep="")
+  }else if(version=="7"){
+    params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id, ".csv", sep="")
   }
-    #else if(version=="5"){
-    #params1[4] <- paste("/bin/cellranger mat2csv /data/outs/filtered_feature_bc_matrix.csv", sep="")
-  #}
   
-
 
 
   fileConn<-file(paste(scrat_tmp.folderDOCKER,"/script.sh", sep=""), "w")
@@ -219,10 +217,11 @@ if (isDocker == FALSE){
 
   #Run docker
   resultRun <- runDocker(group=group, params=params0, dockerID_name)
+ 
   #waiting for the end of the container work
   if(resultRun==0){
-    file.copy(paste(scrat_tmp.folderDOCKER, "/", id), paste(fastq.folder, sep=""), recursive = TRUE)
-    file.copy(paste(scrat_tmp.folderDOCKER, "/results_cellranger.csv"), paste(fastq.folder, sep=""))
+    file.copy(paste(scrat_tmp.folderDOCKER, "/", id, sep=""), paste(fastq.folder, sep=""), recursive = TRUE)
+    file.copy(paste(scrat_tmp.folderDOCKER, "/results_cellranger.csv", sep=""), paste(fastq.folder, sep=""))
     #system(paste("sed \'s|,|\t|g\' ",fastq.folder,"/",id,".csv > ", fastq.folder,"/",id,".txt", sep=""))
     csv_file <- file.path(fastq.folder, paste0(id, ".csv"))
     data <- read.csv(csv_file)
