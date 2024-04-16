@@ -68,7 +68,7 @@ function(group=c("sudo","docker"),scratch.folderDOCKER, scratch.folderHOST,genom
   test <- dockerTest()
   if(!test){
     cat("\nERROR: Docker seems not to be installed in your system\n")
-    exitStatus <- 0
+    exitStatus <- 10
     writeLines(as.character(exitStatus), "ExitStatusFile")
     setwd(home)
     return(10)
