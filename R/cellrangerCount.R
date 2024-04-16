@@ -3,29 +3,30 @@ function(group=c("sudo","docker"),  transcriptome.folder,  fastq.folder,  sample
 
 #checking if the function is running from Docker
 isDocker <- is_running_in_docker()
-
-    if (isDocker == TRUE){
+    
+if (isDocker == TRUE){
     scratch.folderHOST <- gsub("\\\\", "/", scratch.folderHOST)
-
-    #creating a HOSTdocker variable for the trascriptome.folder
+    #creating a HOSTdocker variable for the transcriptome.folder
     host_parts = unlist(strsplit(scratch.folderHOST, "/"))
     docker_parts = unlist(strsplit(scratch.folderDOCKER, "/"))
+    matches = intersect(host_parts, docker_parts)
     matches_path = paste(matches, collapse="/")
     HOSTpath = gsub(matches_path, "", scratch.folderHOST)
-
     #checking if the trascriptome.folderHOST is inside a shared folder
-    tr_parts = unlist(strsplit(trascriptome.folder, "/"))
+    tr_parts = unlist(strsplit(transcriptome.folder, "/"))
     tmatches = intersect(docker_parts, tr_parts)
+    tmatches2 = intersect(host_parts, tr_parts)
     tmatches_path = paste(tmatches, collapse="/")
-    t_path = gsub(tmatches_path, "", trascriptome.folderHOST)
+    tmatches_path2 = paste(tmatches2, collapse="/")
+    t_path = gsub(tmatches_path, "", transcriptome.folder)
     #creating the variable trascriptome.folderHOST
-    trascriptome.folderHOST = paste(HOSTpath, t_path, sep="")
-    }
+    transcriptome.folderHOST = paste(HOSTpath, tmatches_path2, t_path, sep="")
+}
 
-    if (isDocker == FALSE){
-   scratch.folderDOCKER = scratch.folderHOST
-   trascriptome.folderHOST = trascriptome.folder
-   }
+if (isDocker == FALSE){
+    scratch.folderDOCKER = scratch.folderHOST
+    transcriptome.folderHOST = transcriptome.folder
+}
 
 
 
@@ -64,7 +65,7 @@ isDocker <- is_running_in_docker()
   test <- dockerTest()
   if(!test){
     cat("\nERROR: Docker seems not to be installed in your system\n")
-    exitStatus <- 0
+    exitStatus <- 10
     writeLines(as.character(exitStatus), "ExitStatusFile")
     setwd(home)
     return(10)
@@ -104,7 +105,6 @@ isDocker <- is_running_in_docker()
   params <- paste("--cidfile ",fastq.folder,"/", dockerID_name," -v ",transcriptome.folderHOST,":/transcr -v ", scrat_tmp.folderHOST, ":/data -d ",dockerImage, " /bin/cellranger count  --id=",id," --transcriptome=/transcr --fastqs=/data", sep="")
 
   if(!is.null(sample)){
-
     params<-paste(params," --sample=",sample, sep="")
 
   }
@@ -156,10 +156,11 @@ isDocker <- is_running_in_docker()
     params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_gene_bc_matrices ",id,".csv", sep="")
   }else if(version=="3"){
     params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id,".csv", sep="")
+  }else if(version=="5"){
+    params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id, ".csv", sep="")
+  }else if(version=="7"){
+    params1[4] <- paste("/bin/cellranger mat2csv /data/", id,"/outs/filtered_feature_bc_matrix ",id, ".csv", sep="")
   }
-    #else if(version=="5"){
-    #params1[4] <- paste("/bin/cellranger mat2csv /data/outs/filtered_feature_bc_matrix.csv", sep="")
-  #}
   
 
 
@@ -169,14 +170,15 @@ isDocker <- is_running_in_docker()
   close(fileConn)
   #system(paste("chmod +x ", scrat_tmp.folder,"/script.sh", sep=""))
   script_path <- file.path(scrat_tmp.folderDOCKER, "script.sh")
-  Sys.chmod(script_path, mode = "execute", use_umask = FALSE)
+  Sys.chmod(script_path, mode = "0777", use_umask = FALSE)
 
   #Run docker
-  resultRun <- runDocker(group=group, params=params0)
+  resultRun <- runDocker(group=group, params=params0, dockerID_name)
+  
   #waiting for the end of the container work
   if(resultRun==0){
-    file.copy(paste(scrat_tmp.folderDOCKER, "/", id), paste(fastq.folder, sep=""), recursive = TRUE)
-    file.copy(paste(scrat_tmp.folderDOCKER, "/results_cellranger.csv"), paste(fastq.folder, sep=""))
+    file.copy(paste(scrat_tmp.folderDOCKER, "/", id, sep=""), paste(fastq.folder, sep=""), recursive = TRUE)
+    file.copy(paste(scrat_tmp.folderDOCKER, "/results_cellranger.csv", sep=""), paste(fastq.folder, sep=""))
     #system(paste("sed \'s|,|\t|g\' ",fastq.folder,"/",id,".csv > ", fastq.folder,"/",id,".txt", sep=""))
     csv_file <- file.path(fastq.folder, paste0(id, ".csv"))
     data <- read.csv(csv_file)
