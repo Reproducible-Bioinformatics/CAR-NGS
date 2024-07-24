@@ -135,4 +135,17 @@ run_in_docker <- function(image_name,
   file.remove(c("tempFolderID"))
   #system(paste("cp ",paste(path.package(package="rCASC"),"containers/containers.txt",sep="/")," ",data.folder, sep=""))
   setwd(home)
+#' Check if the script is running in a container.
+#'
+#' @returns A truthy value indicating the state.
+is_running_in_docker <- function() {
+  dockerenv_exists <- file.exists("/.dockerenv")
+  cgroup_exists <- file.exists("/proc/1/cgroup")
+  in_container_runtime <- FALSE
+  if (cgroup_exists) {
+    in_container_runtime <- any(
+      grepl("docker", readLines("/proc/1/cgroup", warn = FALSE))
+    )
+  }
+  return(dockerenv_exists || in_container_runtime)
 }
