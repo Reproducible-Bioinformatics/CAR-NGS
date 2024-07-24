@@ -100,7 +100,19 @@ resultRun <- runDocker(group=group, params=params)
           file.copy(file.path(scrat_tmp.folderDOCKER, item), genomeFolder, recursive = TRUE, overwrite = TRUE)
         }
     #system(paste("cp ", scrat_tmp.folder, "/* ", data.folder, sep=""))
+run_in_docker <- function(image_name,
+                          volumes = c(),
+                          additional_arguments = c()) {
+  base_command <- "run --privileged=true --platform linux/amd64 --rm"
+  for (volume in volumes) {
+    base_command <- paste(base_command, "-v", volume)
   }
+  base_command <- paste(base_command, image_name)
+  for (argument in additional_arguments) {
+    base_command <- paste(base_command, argument)
+  }
+  system2("docker", args = base_command, stdout = TRUE)
+}
 
   #saving log and removing docker container
   container.id <- readLines(paste(data.folder,"/",dockerID_name, sep=""), warn = FALSE)
