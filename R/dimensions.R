@@ -65,7 +65,9 @@ run_in_docker <- function(image_name,
                           additional_arguments = c()) {
   base_command <- "run --privileged=true --platform linux/amd64 --rm"
   for (volume in volumes) {
-    base_command <- paste(base_command, "-v", volume)
+    volume[1] <- normalize_path(volume[1],
+      path_mappers = c(docker_mount_mapper)
+    )
     base_command <- paste(base_command, "-v", paste(
       volume[1],
       volume[2],
@@ -76,7 +78,7 @@ run_in_docker <- function(image_name,
   for (argument in additional_arguments) {
     base_command <- paste(base_command, argument)
   }
-  system2("docker", args = base_command, stdout = TRUE)
+  system2("docker", args = base_command, stdout = TRUE, stderr = TRUE)
 }
 
 #' Check if the script is running in a container.
@@ -92,4 +94,55 @@ is_running_in_docker <- function() {
     )
   }
   return(dockerenv_exists || in_container_runtime)
+}
+
+#' Maps a path to host volumes.
+#'
+#' @param path a normalized, absolute path.
+#' @return The absolute host path, if it exists.
+docker_mount_mapper <- function(path) {
+  if (!is_running_in_docker()) {
+    return(path)
+  }
+
+  # Since we are running in docker, we can use our hostname as an heuristic
+  # to obtain our id.
+  # TODO: Check if this assumption is right for other container engines and
+  #       generalize this implementation.
+  hostname <- Sys.info()["nodename"]
+  output <- system2("docker",
+    args = paste("inspect -f '{{ json .Mounts }}'", hostname),
+    stdout = TRUE,
+  )
+  parsed_output <- jsonlite::fromJSON(output)
+
+  # Iterate over mounts, return first match.
+  for (i in seq_len(nrow(parsed_output))) {
+    destination <- parsed_output[i, ]$Destination
+    if (startsWith(path, destination)) {
+      source <- parsed_output[i, ]$Source
+      path <- sub(destination, source, path)
+      return(path)
+    }
+  }
+  return(path)
+}
+
+#' Gets the absolute path of a file.
+#'
+#' @param path a normalized, absolute path.
+#' @return The absolute host path, if it exists.
+absolute_path_mapper <- function(path) {
+  return(normalizePath(path, mustWork = FALSE))
+}
+
+normalize_path <- function(path, path_mappers = c()) {
+  path_mappers <- c(
+    absolute_path_mapper, # Adds absolute_path_mapper at the beginning.
+    path_mappers
+  )
+  for (mapper in path_mappers) {
+    path <- mapper(path)
+  }
+  return(path)
 }
