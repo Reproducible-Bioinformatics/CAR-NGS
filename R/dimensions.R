@@ -146,3 +146,37 @@ normalize_path <- function(path, path_mappers = c()) {
   }
   return(path)
 }
+with_scratch_directory <- function(
+    source_directory,
+    target_directory,
+    callback_function,
+    cleanup_after = FALSE,
+    copy_pattern = NULL) {
+  if (!dir.exists(source_directory)) {
+    stop(paste("source_directory", source_directory, "doesn't exist."))
+  }
+  if (typeof(callback_function) != "closure") {
+    stop("callback_function is not a closure.")
+  }
+  # Create directory if doesn't exist.
+  dir.create(target_directory, recursive = TRUE)
+
+  # Calls the callback function.
+  callback_function(target_directory)
+
+  if (!cleanup_after) {
+    return
+  }
+  # Copy back from target_directory to source_directory.
+  file.copy(
+    list.files(
+      pattern = copy_pattern,
+      path = target_directory,
+      full.names = TRUE,
+      all.files = TRUE,
+      recursive = TRUE,
+    ),
+    source_directory
+  )
+  unlink(target_directory, recursive = TRUE)
+}
