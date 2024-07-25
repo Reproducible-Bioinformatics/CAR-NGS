@@ -146,9 +146,23 @@ normalize_path <- function(path, path_mappers = c()) {
   }
   return(path)
 }
+
+#' Append a timed directory with the format %Y%m%d_%H%M%S to the
+#' target_directory path.
+#'
+#' @param target_directory The target directory.
+#' @return Timed directory with the format %Y%m%d_%H%M%S appended to
+#' target_directory path.
+modifier_timed_directory <- function(target_directory) {
+  return(
+    file.path(target_directory, strftime(time, "%Y%m%d_%H%M%S"))
+  )
+}
+
 with_scratch_directory <- function(
     source_directory,
     target_directory,
+    modifier = modifier_timed_directory,
     callback_function,
     cleanup_after = FALSE,
     copy_pattern = NULL) {
@@ -157,6 +171,12 @@ with_scratch_directory <- function(
   }
   if (typeof(callback_function) != "closure") {
     stop("callback_function is not a closure.")
+  }
+  if (modifier != NULL) {
+    if (typeof(modifier) != "closure") {
+      stop("modifier is not a closure.")
+    }
+    target_directory <- modifier(target_directory)
   }
   # Create directory if doesn't exist.
   dir.create(target_directory, recursive = TRUE)
