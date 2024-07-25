@@ -1,19 +1,19 @@
-dimensions <- function(host_folder, input_file, separator) {
+dimensions <- function(result_dir_path, input_file_path, separator) {
   # Type checking.
-  if (typeof(host_folder) != "character") {
+  if (typeof(result_dir_path) != "character") {
     stop(
       paste(
-        "host_folder type is",
-        paste0(typeof(host_folder), "."),
+        "result_dir_path type is",
+        paste0(typeof(result_dir_path), "."),
         "It should be \"character\""
       )
     )
   }
-  if (typeof(input_file) != "character") {
+  if (typeof(input_file_path) != "character") {
     stop(
       paste(
-        "input_file type is",
-        paste0(typeof(input_file), "."),
+        "input_file_path type is",
+        paste0(typeof(input_file_path), "."),
         "It should be \"character\""
       )
     )
@@ -28,26 +28,30 @@ dimensions <- function(host_folder, input_file, separator) {
     )
   }
 
-  if (!file.exists(input_file)) {
-    stop(paste("input_file:", input_file, "does not exist."))
-  }
-  if (!dir.exists(host_folder)) {
-    stop(paste("host_folder:", host_folder, "does not exist."))
+  if (!is_running_in_docker()) {
+    if (!file.exists(input_file_path)) {
+      stop(paste("input_file_path:", input_file_path, "does not exist."))
+    }
+    if (!dir.exists(result_dir_path)) {
+      stop(paste("result_dir_path:", result_dir_path, "does not exist."))
+    }
   }
 
-  # Obtain parent folder from input_file.
-  parent_folder <- dirname(input_file)
+  # Obtain parent folder from input_file_path.
+  parent_folder <- dirname(input_file_path)
 
-  # Obtain matrix name and file format from input_file.
-  input_file_parts <- strsplit(basename(input_file), "\\.")[[1]]
-  matrix_name <- input_file_parts[1]
-  format <- input_file_parts[2] # Uses extension as an heuristic.
+  # Obtain matrix name and file format from input_file_path.
+  input_file_path_parts <- strsplit(basename(input_file_path), "\\.")[[1]]
+  matrix_name <- input_file_path_parts[1]
+  format <- input_file_path_parts[2] # Uses extension as an heuristic.
 
   run_in_docker(
     image_name = "docker.io/repbioinfo/r332.2017.01:latest",
     volumes = c(
       paste0(host_folder, ":/data"),
       paste0(parent_folder, ":/scratch")
+      c(result_dir_path, "/data"),
+      c(parent_folder, "/scratch")
     ),
     additional_arguments = c(
       "Rscript /home/main.R",
