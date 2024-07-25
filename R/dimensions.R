@@ -47,9 +47,7 @@ dimensions <- function(result_dir_path, input_file_path, separator) {
 
   run_in_docker(
     image_name = "docker.io/repbioinfo/r332.2017.01:latest",
-    volumes = c(
-      paste0(host_folder, ":/data"),
-      paste0(parent_folder, ":/scratch")
+    volumes = list(
       c(result_dir_path, "/data"),
       c(parent_folder, "/scratch")
     ),
@@ -63,11 +61,16 @@ dimensions <- function(result_dir_path, input_file_path, separator) {
 }
 
 run_in_docker <- function(image_name,
-                          volumes = c(),
+                          volumes = list(),
                           additional_arguments = c()) {
   base_command <- "run --privileged=true --platform linux/amd64 --rm"
   for (volume in volumes) {
     base_command <- paste(base_command, "-v", volume)
+    base_command <- paste(base_command, "-v", paste(
+      volume[1],
+      volume[2],
+      sep = ":"
+    ))
   }
   base_command <- paste(base_command, image_name)
   for (argument in additional_arguments) {
