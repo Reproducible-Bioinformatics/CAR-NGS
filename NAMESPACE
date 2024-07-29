@@ -1,4 +1,0 @@
-export("bulkClusters", "cellrangerCount", "cellrangerIndexing", "cometsc",
-       "csvToSparse", "dimensions", "logTransform", "mitoRiboUmi", "permAnalysis",
-       "permAnalysisSeurat", "permutationClustering", "seurat_ccycle",
-       "seuratBootstrap", "seuratPermutation", "splitClusters", "tsneBootstrap")
