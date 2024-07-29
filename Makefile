@@ -25,3 +25,8 @@ build: clean document test
 
 clean:
 	rm -rf $(PKG_NAME).Rcheck $(PKG_TAR)
+
+lint:
+	$(R) \
+		-e 'if (!require("lintr")) install.packages("lintr")' \
+		-e 'lintr::lint_package()'
