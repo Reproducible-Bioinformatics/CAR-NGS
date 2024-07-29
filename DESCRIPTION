@@ -7,3 +7,18 @@ Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
 License: Apache2
+Title: Cross-platform Accessible Reproducible NGS
+Version: 1.0.0
+Authors@R: 
+	person("Luca", "Alessandri", , "l.alessanri@unito.it",
+	role = c("aut", "cre"))
+Description:
+	CARN is designed to facilitate a comprehensive, reproducible, and accessible
+	approach to NGS data analysis, ensuring consistency and accuracy across
+	different computational platforms. By integrating state-of-the-art techniques
+	for data processing, analysis, and visualization, CARN enables researchers to
+	navigate the intricacies of genomic data with greater ease and confidence.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
