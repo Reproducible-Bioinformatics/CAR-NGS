@@ -1,5 +1,24 @@
-permAnalysis <-
-function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file,range1,range2,separator,sp,clusterPermErr=0.05,maxDeltaConfidence=0.01,minLogMean=0.05){
+#' @title Permutation Analysis
+#' @description This function analyze the data that came up from permutationClustering script.
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param range1, First number of cluster that has to be analyzed
+#' @param range2, Last number of cluster that has to be analyzed
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param sp, minimun number of percentage of cells that has to be in common between two permutation to be the same cluster.
+#' @param clusterPermErr, error that can be done by each permutation in cluster number depicting.Default = 0.05
+#' @param maxDeltaConfidence, max value for Delta confidence for genes feature selection
+#' @param minLogMean, min value for Log mean for genes feature selection
+#' @author Luca Alessandri , alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#'
+#' @return stability plot for each nCluster,two files with score information for each cell for each permutation.
+#' @examples
+#'\dontrun{
+#'permAnalysis("docker","path/to/scratch","path/to/data/TOTAL",3,4,",",0.8)#
+#'}
+#' @export
+permAnalysis <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file,range1,range2,separator,sp,clusterPermErr=0.05,maxDeltaConfidence=0.01,minLogMean=0.05){
 
   data.folder=dirname(file)
 positions=length(strsplit(basename(file),"\\.")[[1]])

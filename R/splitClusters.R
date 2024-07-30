@@ -1,5 +1,20 @@
-splitClusters <-
-function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file, separator,nCluster){
+#' @title Split Matrix for each clusters
+#' @description This function executes a ubuntu docker that merge two matrix
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param nCluster, interesting number of clusters
+
+#' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#'
+#' @return one Matrix for each cluster
+#' @examples
+#' \dontrun{
+#splitClusters(group="sudo", scratch.folder="/data/scratch", file="/media/lucastormreig/8799-82B36/PHD/CASC8.1Stable/CASC8.0STABLE/new/splitInClusters/data/annotated_lorenz_testSCumi_mm10.csv", separator=",",3)
+#'}
+#' @export
+splitClusters <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file, separator,nCluster){
 
 
 data.folder=dirname(file)

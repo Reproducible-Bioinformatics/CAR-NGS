@@ -1,5 +1,26 @@
-seurat_ccycle <-
-function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file ,separator ,seed){
+#' @title Seurat cell cycle
+#' @description This function executes a ubuntu docker that performs seurat cell cycle
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the first matrix 
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param seed, integer file necessary for reproducibility
+
+#' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#' @return file containing the cluster association in the datasets merged by seurat
+#' @examples
+#' \dontrun{
+#' library(rCASC)
+#' source("seurat_cCycle.R")
+#' path=getwd()
+#' scratch=paste(path,"/scratch",sep="")
+#' dir.create(scratch)
+#' file1=paste(path,"/setA.csv",sep="")
+#'seurat_ccycle(group="docker", scratch.folder=scratch, file= file1, separator=",",seed=1111)
+#'}
+#' @export
+#' 
+seurat_ccycle <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file ,separator ,seed){
 
   data.folder=dirname(file)
   positions=length(strsplit(basename(file),"\\.")[[1]])

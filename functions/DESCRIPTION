@@ -1,9 +1,0 @@
-Package: CARN
-Type: Package
-Title: rCASC reproducible Classification Analysis of Single Cell Sequencing Data
-Version: 1.0
-Date: 2024-03-05
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: Apache2

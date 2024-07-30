@@ -1,5 +1,44 @@
-seuratPermutation <-
-function(group=c("sudo","docker"), scratch.folderDOCKER,scratch.folderHOST,file, nPerm, permAtTime, percent, separator, logTen=0,pcaDimensions,seed=1111,sparse=FALSE,format="NULL",resolution=0.6){
+#' @title Seurat Permutation
+#' @description This function executes a ubuntu docker that produces a specific number of permutation to evaluate clustering.
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param nPerm, number of permutations to perform the pValue to evaluate clustering
+#' @param permAtTime, number of permutations that can be computes in parallel
+#' @param percent, percentage of randomly selected cells removed in each permutation
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param logTen, 1 if the count matrix is already in log10, 0 otherwise
+#' @param pcaDimensions, 	0 for automatic selection of PC elbow.
+#' @param seed, important value to reproduce the same results with same input
+#' @param sparse, boolean for sparse matrix
+#' @param format, output file format csv or txt
+#' @param resolution, resolution for Seurat Analysis
+
+
+#' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#'
+#' @return To write
+#' @examples
+#' \dontrun{
+#'  system("wget http://130.192.119.59/public/section4.1_examples.zip")
+#'  unzip("section4.1_examples.zip")
+#'  setwd("section4.1_examples")
+
+#'  system("wget ftp://ftp.ensembl.org/pub/release-94/gtf/homo_sapiens/Homo_sapiens.GRCh38.94.gtf.gz")
+#'  system("gzip -d Homo_sapiens.GRCh38.94.gtf.gz")
+#'  system("mv Homo_sapiens.GRCh38.94.gtf genome.gtf")
+#'  scannobyGtf(group="docker", file=paste(getwd(),"bmsnkn_5x100cells.txt",sep="/"),
+#'              gtf.name="genome.gtf", biotype="protein_coding", 
+#'              mt=TRUE, ribo.proteins=TRUE,umiXgene=3)
+#'  
+#'  seuratBootstrap(group="docker",scratch.folder="/data/scratch/",
+#'       file=paste(getwd(), "annotated_bmsnkn_5x100cells.txt", sep="/"), 
+#'       nPerm=160, permAtTime=8, percent=10, separator="\t",
+#'       logTen=0, pcaDimensions=6, seed=111)
+#'}
+
+#' @export
+seuratPermutation <- function(group=c("sudo","docker"), scratch.folderDOCKER,scratch.folderHOST,file, nPerm, permAtTime, percent, separator, logTen=0,pcaDimensions,seed=1111,sparse=FALSE,format="NULL",resolution=0.6){
   
   if(!sparse){
     data.folder=dirname(file)

@@ -1,5 +1,29 @@
-permutationClustering <-
-function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file, nPerm, permAtTime, percent, range1=3, range2=3, separator, logTen=0, clustering, perplexity=10 , seed=1111, rK=0){
+#' @title Permutations and Clustering
+#' @description This function executes a ubuntu docker that produces a specific number of permutation to evaluate clustering.
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param nPerm, number of permutations to perform the pValue to evaluate clustering
+#' @param permAtTime, number of permutations that can be computes in parallel
+#' @param percent, percentage of randomly selected cells removed in each permutation
+#' @param range1, first number of cluster for k means algorithm
+#' @param range2, last number of cluster for k means algorithm
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param logTen, 1 if the count matrix is already in log10, 0 otherwise
+#' @param clustering, clustering method to use : "SIMLR" , "tSne", "griph"
+#' @param perplexity, Number of close neighbors for each point. This parameter is specific for tSne. Default value is 10.Setting this parameter when use a clustering method different by tSne will be ignored.
+#' @param seed, important value to reproduce the same results with same input
+#' @param rK, 1 for rankGene algorithm 0 otherwise WARNING, very slow with this feature. This parameter is specific for SIMLR. Setting this parameter to 1 with other clustering methods will not give any different result to set the parameter to 0.
+
+#' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#'
+#' @return VioPlot of silhouette cells value for each number of cluster used,clusterP file with clustering results for each permutation, killedCell file with removed cells in each permutation, clustering.output a sommarize file with general information for each cells.
+#' @examples
+#' \dontrun{
+#'  permutationClustering("docker","/home/lucastormreig/CASC2.0/permutationClustering/scratch/","/home/lucastormreig/CASC2.0/permutationClustering/Data/TOTAL.csv",4,2,10,3,4,separator=",",logTen=0,clustering="SIMLR",perplexity=0)
+#'}
+#' @export
+permutationClustering <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file, nPerm, permAtTime, percent, range1=3, range2=3, separator, logTen=0, clustering, perplexity=10 , seed=1111, rK=0){
 
   data.folder=dirname(file)
   positions=length(strsplit(basename(file),"\\.")[[1]])

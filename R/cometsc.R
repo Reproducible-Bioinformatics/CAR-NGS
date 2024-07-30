@@ -1,5 +1,28 @@
-cometsc <-
-function(group=c("sudo","docker"), file, scratch.folderDOKER, scratch.folderHOST, threads=1,  X=0.15, K=2, counts=c("True", "False"), skipvis=c("True", "False"), nCluster, separator){
+#' @title Marker genes discovery with COMETSC
+#' @description This function executes a ubuntu docker for cometsc (https://github.com/MSingerLab/COMETSC)
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param threads, integer refering to the max number of process run in parallel default 1 max the number of clusters under analysis, i.e. nCluster
+#' @param X, from 0 to 1 argument for XL-mHG default 0.15, for more info see cometsc help.
+#' @param K, the number of gene combinations to be considered., possible values 2, 3, 4, default 2. WARNING increasing the number of combinations makes the matrices very big
+#' @param counts, if set to True it will graph the log(expression+1). To be used if unlogged data are provided
+#' @param skipvis, set to True to skip visualizations
+#' @param nCluster, number of interested cluster used for analysis
+#' @param scratch.folder, temporary folder where calculation is made
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @return folders with prefix output. More info in output at https://hgmd.readthedocs.io/en/latest/Output.html
+#' @author Raffaele Calogero,raffaele.calogero [at] unito [dot] it, University of Torino
+#' 
+#' @examples
+#' \dontrun{
+#'     #running cometsc
+#'     cometsc(group="docker", file="/Users/raffaelecalogero/Desktop/AXLN1/data/topx_veanno.csv", 
+#'            scratch.folder="/Users/raffaelecalogero/Desktop",
+#'            threads=1, counts="True", skipvis="False", nCluster=8, separator=",") 
+#' }
+#'
+#' @export
+cometsc <- function(group=c("sudo","docker"), file, scratch.folderDOKER, scratch.folderHOST, threads=1,  X=0.15, K=2, counts=c("True", "False"), skipvis=c("True", "False"), nCluster, separator){
 
     id="results_cellranger"
 

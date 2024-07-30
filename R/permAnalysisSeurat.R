@@ -1,5 +1,36 @@
-permAnalysisSeurat <-
-function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file,nCluster,separator,sp=0.8,sparse=FALSE,format="NULL"){
+#' @title Permutation Analysis Seurat
+#' @description This function analyze the data that came up from permutationClustering script.
+#' @param group, a character string. Two options: sudo or docker, depending to which group the user belongs
+#' @param scratch.folder, a character string indicating the path of the scratch folder
+#' @param file, a character string indicating the path of the file, with file name and extension included
+#' @param nCluster, number of cluster that has to be analyzed
+#' @param separator, separator used in count file, e.g. '\\t', ','
+#' @param sp, minimun number of percentage of cells that has to be in common between two permutation to be the same cluster.
+#' @param sparse, boolean for sparse matrix
+#' @param format, output file format csv or txt
+#' @author Luca Alessandri , alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
+#'
+#' @return stability plot for each nCluster,two files with score information for each cell for each permutation.
+#' @examples
+#'\dontrun{
+#'  system("wget http://130.192.119.59/public/section4.1_examples.zip")
+#'  unzip("section4.1_examples.zip")
+#'  setwd("section4.1_examples")
+
+#'  system("wget ftp://ftp.ensembl.org/pub/release-94/gtf/homo_sapiens/Homo_sapiens.GRCh38.94.gtf.gz")
+#'  system("gzip -d Homo_sapiens.GRCh38.94.gtf.gz")
+#'  system("mv Homo_sapiens.GRCh38.94.gtf genome.gtf")
+#'  scannobyGtf(group="docker", file=paste(getwd(),"bmsnkn_5x100cells.txt",sep="/"),
+#'              gtf.name="genome.gtf", biotype="protein_coding", 
+#'              mt=TRUE, ribo.proteins=TRUE,umiXgene=3)
+#'  
+#'  seuratBootstrap(group="docker",scratch.folder="/data/scratch/",
+#'       file=paste(getwd(), "annotated_bmsnkn_5x100cells.txt", sep="/"), 
+#'       nPerm=160, permAtTime=8, percent=10, separator="\t",
+#'       logTen=0, pcaDimensions=6, seed=111, format="NULL")
+#'}
+#' @export
+permAnalysisSeurat <- function(group=c("sudo","docker"), scratch.folderDOCKER, scratch.folderHOST, file,nCluster,separator,sp=0.8,sparse=FALSE,format="NULL"){
 
 if(!sparse){
   data.folder=dirname(file)
