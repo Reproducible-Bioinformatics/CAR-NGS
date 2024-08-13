@@ -89,7 +89,7 @@ cellrangerIndexing <- function(result_dir_path, gtf.url, fasta.url, bio.type = c
   rrundocker::run_in_docker(
       image_name = paste0(dockerImage,":latest"),
       volumes = list(
-        c(result_dir_path, "/data"),
+        c(result_dir_path, "/data")
       ),
       additional_arguments = c(
         "/home/indexing.sh",
