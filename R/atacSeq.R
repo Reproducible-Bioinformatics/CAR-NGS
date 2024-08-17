@@ -57,5 +57,3 @@ atacSeq <- function(input_dir_path, genome_dir_path, nThreads=8){
     )
   )
 }
-
-
