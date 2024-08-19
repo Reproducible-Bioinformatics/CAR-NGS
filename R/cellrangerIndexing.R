@@ -71,6 +71,7 @@ cellrangerIndexing <- function(result_dir_path, gtf.url, fasta.url, bio.type = c
   if (typeof(bio.type) != "character") {
     stop(paste("bio.type type is", paste0(typeof(bio.type), "."), "It should be \"character\""))
   }
+
   if (!is.numeric(nThreads)) {
     stop(paste("nThreads type is", paste0(typeof(nThreads), "."), "It should be \"double\" or \"integer\""))
   }

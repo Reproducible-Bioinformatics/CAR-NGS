@@ -1,9 +1,8 @@
 #' MitoRiboUmi
 #'
 #' This function executes a ubuntu docker showing ribosomal mitochondrial protein genes fraction in each cell,
-#' providing a pdf file called Ribo_mito.pdf inside result_dir_path
+#' providing a pdf file called Ribo_mito.pdf inside the parent_folder
 #'
-#' @param result_dir_path, a character string indicating the path where the result files are saved
 #' @param input_file_path, a character string indicating the path of the file, with file name and extension included
 #' @param separator, separator used in the count table
 #' @param gtf.name, name for the gtf file to be used.
@@ -15,7 +14,6 @@
 #' @examples
 #'\dontrun{
 #' mitoRiboUmi(
-#'   result_dir_path = "/the/result/dir",
 #'   input_file_path = "/the/input/file.csv",
 #'   separator = ",",
 #'   gtf.name="Homo_sapiens.GRCh38.112.gtf",
@@ -27,9 +25,6 @@
 mitoRiboUmi <- function(result_dir_path, input_file_path, separator, gtf.name, bio.type, umiXgene){
 
   # Type checking.
-  if (typeof(result_dir_path) != "character") {
-    stop(paste("result_dir_path type is", paste0(typeof(result_dir_path), "."), "It should be \"character\""))
-  }
   if (typeof(input_file_path) != "character") {
     stop(paste("input_file_path type is", paste0(typeof(input_file_path), "."), "It should be \"character\""))
   }
@@ -42,17 +37,14 @@ mitoRiboUmi <- function(result_dir_path, input_file_path, separator, gtf.name, b
   if (typeof(bio.type) != "character") {
     stop(paste("bio.type type is", paste0(typeof(bio.type), "."), "It should be \"character\""))
   }
-  if (typeof(umiXgene) != "integer") {
-    stop(paste("umiXgene type is", paste0(typeof(umiXgene), "."), "It should be \"integer\""))
+  if (typeof(umiXgene) != "double") {
+    stop(paste("umiXgene type is", paste0(typeof(umiXgene), "."), "It should be \"double\""))
   }
 
   # Check if the given paths exist
   if (!rrundocker::is_running_in_docker()) {
     if (!file.exists(input_file_path)) {
       stop(paste("input_file_path:", input_file_path, "does not exist."))
-    }
-    if (!dir.exists(result_dir_path)) {
-      stop(paste("result_dir_path:", result_dir_path, "does not exist."))
     }
   }
 
@@ -68,7 +60,6 @@ mitoRiboUmi <- function(result_dir_path, input_file_path, separator, gtf.name, b
   rrundocker::run_in_docker(
     image_name = "docker.io/repbioinfo/ribomitoumi:latest",
     volumes = list(
-      c(result_dir_path, "/data"),
       c(parent_folder, "/scratch")
     ),
     additional_arguments = c(
