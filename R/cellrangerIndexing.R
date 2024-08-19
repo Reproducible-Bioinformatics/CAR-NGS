@@ -11,15 +11,15 @@
 #'
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' cellrangerIndexing(
 #'   result_dir_path = "/the/result/dir",
-#'   gtf.url="https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz",
-#'   fasta.url="https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.toplevel.fa.gz",
-#'   bio.type="protein_coding",
+#'   gtf.url = "https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz",
+#'   fasta.url = "https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.toplevel.fa.gz",
+#'   bio.type = "protein_coding",
 #'   nThreads = 8
 #' )
-#'}
+#' }
 #'
 #' @export
 
@@ -46,7 +46,6 @@ cellrangerIndexing <- function(result_dir_path, gtf.url, fasta.url, bio.type = c
                                  "vaultRNA", "sRNA",
                                  "macro_lncRNA", "non_coding", "IG_pseudogene"
                                ), nThreads, version = "5") {
-
   id <- "results_cellranger"
 
   # docker image
@@ -71,8 +70,8 @@ cellrangerIndexing <- function(result_dir_path, gtf.url, fasta.url, bio.type = c
   if (typeof(bio.type) != "character") {
     stop(paste("bio.type type is", paste0(typeof(bio.type), "."), "It should be \"character\""))
   }
-  if (typeof(nThreads) != "double") {
-    stop(paste("nThreads type is", paste0(typeof(nThreads), "."), "It should be \"double\""))
+  if (!is.numeric(nThreads)) {
+    stop(paste("nThreads type is", paste0(typeof(nThreads), "."), "It should be \"double\" or \"integer\""))
   }
   if (typeof(version) != "character") {
     stop(paste("version type is", paste0(typeof(version), "."), "It should be \"character\""))
@@ -87,16 +86,16 @@ cellrangerIndexing <- function(result_dir_path, gtf.url, fasta.url, bio.type = c
 
   # Executing the docker job
   rrundocker::run_in_docker(
-      image_name = paste0(dockerImage,":latest"),
-      volumes = list(
-        c(result_dir_path, "/data")
-      ),
-      additional_arguments = c(
-        "/home/indexing.sh",
-        gtf.url,
-        fasta.url,
-        bio.type,
-        nThreads
-      )
+    image_name = paste0(dockerImage, ":latest"),
+    volumes = list(
+      c(result_dir_path, "/data")
+    ),
+    additional_arguments = c(
+      "/home/indexing.sh",
+      gtf.url,
+      fasta.url,
+      bio.type,
+      nThreads
     )
- }
+  )
+}
