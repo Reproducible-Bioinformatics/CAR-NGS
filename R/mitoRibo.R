@@ -75,6 +75,12 @@ mitoRibo <- function(input_file_path, mitoMin, mitoMax, riboMin, riboMax, separa
   # Obtain parent folder from input_file_path.
   parent_folder <- dirname(input_file_path)
 
+  # Obtain matrix name and file format from input_file_path to create the variable matrix_file
+  input_file_path_parts <- strsplit(basename(input_file_path), "\\.")[[1]]
+  matrix_name <- input_file_path_parts[1]
+  format <- input_file_path_parts[2] # Uses extension as an heuristic.
+  matrix_file <- paste0(matrix_name, ".", format)
+
   # Executing the docker job
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/singlecelldownstream:latest"),
@@ -83,13 +89,14 @@ mitoRibo <- function(input_file_path, mitoMin, mitoMax, riboMin, riboMax, separa
     ),
     additional_arguments = c(
       "Rscript /home/mitoRiboFilter.R",
+      paste0("/scratch/",matrix_name),
       mitoMin,
       mitoMax.
       riboMin,
       riboMax,
       separator,
-      genes_file,
-      barcodes_file
+      paste0("/scratch/",genes_file),
+      paste0("/scratch/",barcodes_file)
     )
   )
 }
