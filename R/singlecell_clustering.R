@@ -17,7 +17,7 @@
 #' @examples
 #'\dontrun{
 #' # Dense matrix analysis
-#'   mitoRibo(
+#'   singlecell_clustering(
 #'     input_file_path = "/the/input/file.csv",
 #'     bootstrap_percentage=0.1,
 #'     stability_threshold=0.8,
@@ -27,7 +27,7 @@
 #'   )
 #'
 #' # Dense matrix analysis
-#'   mitoRibo(
+#'   singlecell_clustering(
 #'     input_file_path = "/the/input/file.mtx",
 #'     bootstrap_percentage=0.1,
 #'     stability_threshold=0.8,
