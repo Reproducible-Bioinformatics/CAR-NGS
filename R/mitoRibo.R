@@ -91,7 +91,7 @@ mitoRibo <- function(input_file_path, mitoMin, mitoMax, riboMin, riboMax, separa
       "Rscript /home/mitoRiboFilter.R",
       paste0("/scratch/",matrix_file),
       mitoMin,
-      mitoMax.
+      mitoMax,
       riboMin,
       riboMax,
       separator,
