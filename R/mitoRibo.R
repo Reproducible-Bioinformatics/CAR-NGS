@@ -66,7 +66,7 @@ mitoRibo <- function(input_file_path, mitoMin, mitoMax, riboMin, riboMax, separa
   }
 
   # Check if the given paths exist
-  if (!is_running_in_docker()) {
+  if (!rrundocker::is_running_in_docker()) {
     if (!file.exists(input_file_path)) {
       stop(paste("input_file_path:", input_file_path, "does not exist."))
     }
@@ -89,7 +89,7 @@ mitoRibo <- function(input_file_path, mitoMin, mitoMax, riboMin, riboMax, separa
     ),
     additional_arguments = c(
       "Rscript /home/mitoRiboFilter.R",
-      paste0("/scratch/",matrix_name),
+      paste0("/scratch/",matrix_file),
       mitoMin,
       mitoMax,
       riboMin,
