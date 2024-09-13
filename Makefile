@@ -1,6 +1,6 @@
 default: build
 
-.PHONY: document test clean check build clean 
+.PHONY: document test clean check build clean format
 
 PKG_NAME := CARN
 PKG_VERS := 1.0.0
@@ -30,3 +30,8 @@ lint:
 	$(R) \
 		-e 'if (!require("lintr")) install.packages("lintr")' \
 		-e 'lintr::lint_package()'
+
+format:
+	$(R) \
+		-e 'if (!require("styler")) install.packages("styler")' \
+		-e 'styler::style_pkg()'
