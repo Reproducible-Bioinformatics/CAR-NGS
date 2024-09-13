@@ -19,7 +19,7 @@
 #' # Dense matrix analysis
 #' singlecell_featureSelection(
 #'   input_file_path = "/the/input/file.csv",
-#'   clustering_file = "combined_filtered_matrix_with_sample_clustering_stability.output.csv",
+#'   clustering_file = "DENSE_Filtered_clustering_stability.output.csv",
 #'   threshold = 0,
 #'   log2fc = 1,
 #'   pvalue = 0.05,
@@ -84,6 +84,9 @@ singlecell_featureSelection <- function(input_file_path, clustering_file, thresh
   format <- input_file_path_parts[2] # Uses extension as an heuristic.
   matrix_file <- paste0(matrix_name, ".", format)
 
+  # Setting the separator as NULL for sparse matrix analysis
+  if (is.null(separator)) { separator = "NULL" }
+
   # Executing the docker job
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/singlecelldownstream:latest"),
@@ -92,15 +95,15 @@ singlecell_featureSelection <- function(input_file_path, clustering_file, thresh
     ),
     additional_arguments = c(
       "Rscript /home/featureSelection.R",
-      paste0("/scratch/", matrix_file),
+      matrix_file,
       clustering_file,
       threshold,
       log2fc,
       pvalue,
       separator,
-      paste0("/scratch/", genes_file),
-      paste0("/scratch/", barcodes_file),
-      heatmap
+      genes_file,
+      barcodes_file,
+      if (heatmap) "true" else "false"
     )
   )
 }
