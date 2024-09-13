@@ -1,32 +1,52 @@
 #' Index and Alignment Script for single cell analysis
 #'
-#' This script handles the alignment and indexing of the FASTQ files generated from single-cell RNA-seq experiments using Cell Ranger.
-#' It returns a output directory inside input_dir_path containing aligned BAM files and combined matrix of counts.
+#' This script handles the alignment and indexing of the FASTQ files generated
+#' from single-cell RNA-seq experiments using Cell Ranger.
+#' It returns a output directory inside input_dir_path containing aligned BAM
+#' files and combined matrix of counts.
 #'
-#' @param input_dir_path, a character string indicating the path of a directory containing the fastq files to be analyzed
-#' @param genome_dir_path, a character string indicating the path of a directory containing the fasta and gtf files of the genome to be analyzed
-#' @param bamsave, a boolean variable indicating if the BAM files are to be saved or not
+#' @param input_dir_path, a character string indicating the path of a directory
+#' containing the fastq files to be analyzed
+#' @param genome_dir_path, a character string indicating the path of a directory
+#' containing the fasta and gtf files of the genome to be analyzed
+#' @param bamsave, a boolean variable indicating if the BAM files are to be
+#' saved or not
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples
 #' \dontrun{
-#'  singlecell_alignIndex(
-#'     input_dir_path="/the/input/path",
-#'     genome_dir_path="/the/genome/path",
-#'  )
+#' singlecell_alignIndex(
+#'   input_dir_path = "/the/input/path",
+#'   genome_dir_path = "/the/genome/path",
+#' )
 #' }
 #' @export
-singlecell_alignIndex <- function(input_dir_path, genome_dir_path, bamsave=TRUE){
-
+singlecell_align_index <- function(
+    input_dir_path, genome_dir_path, bamsave = TRUE) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
-    stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "input_dir_path type is", paste0(typeof(input_dir_path), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (typeof(genome_dir_path) != "character") {
-    stop(paste("genome_dir_path type is", paste0(typeof(genome_dir_path), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "genome_dir_path type is", paste0(typeof(genome_dir_path), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (typeof(bamsave) != "logical") {
-    stop(paste("bamsave type is", paste0(typeof(bamsave), "."), "It should be \"logical\""))
+    stop(
+      paste(
+        "bamsave type is", paste0(typeof(bamsave), "."),
+        "It should be \"logical\""
+      )
+    )
   }
 
   # Check if the paths in input exist
@@ -48,8 +68,7 @@ singlecell_alignIndex <- function(input_dir_path, genome_dir_path, bamsave=TRUE)
     ),
     additional_arguments = c(
       "/home/index_align.sh",
-      bamsave
+      if (bamsave) "true" else "false"
     )
   )
 }
-
