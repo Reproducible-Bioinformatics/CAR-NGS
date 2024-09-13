@@ -1,47 +1,80 @@
 #' Enrichment Analysis Script
 #'
-#' This script processes the results of differential expression and performs pathway enrichment analysis.
-#' It returns a output directory inside parent_folder containing a PDF file containing a bar plot of the enriched terms.
+#' This script processes the results of differential expression and performs
+#' pathway enrichment analysis.
+#' It returns a output directory inside parent_folder containing a PDF file
+#' containing a bar plot of the enriched terms.
 #'
-#' @param input_file_path, a character string indicating the path of a CSV file containing the results of differential expression analysis.
-#' @param species, a character string indicating the species that is being analyzed (e.g. "hsapiens", "mmusculus" or "dmelanogaster")
-#' @param source, a charcter sting indicating the source of enrichment analysis
+#' @param input_file_path, a character string indicating the path of a CSV file
+#' containing the results of differential expression analysis.
+#' @param species, a character string indicating the species that is being
+#' analyzed (e.g. "hsapiens", "mmusculus" or "dmelanogaster")
+#' @param source, a character sting indicating the source of enrichment analysis
 #' @param separator, separator used in the count table
-#' @param max_terms, the maximum number of enriched terms to display in the output plot
+#' @param max_terms, the maximum number of enriched terms to display in the
+#' output plot
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples
 #' \dontrun{
-#'  enrichmentAnalysis(
-#'     input_file_path="/the/input/file/path",
-#'     species = "dmelanogaster",
-#'     source = "KEGG"
-#'     separator = ","
-#'     max_terms = 20
-#'  )
+#' enrichmentAnalysis(
+#'   input_file_path = "/the/input/file/path",
+#'   species = "dmelanogaster",
+#'   source = "KEGG",
+#'   separator = ",",
+#'   max_terms = 20
+#' )
 #' }
 #' @export
-enrichmentAnalysis <- function(input_file_path, species, source, separator, max_terms){
-
+enrichment_analysis <- function(input_file_path,
+                                species,
+                                source,
+                                separator,
+                                max_terms) {
   # Type checking.
   if (typeof(input_file_path) != "character") {
-    stop(paste("input_file_path type is", paste0(typeof(input_file_path), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "input_file_path type is", paste0(typeof(input_file_path), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (typeof(species) != "character") {
-    stop(paste("species type is", paste0(typeof(species), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "species type is", paste0(typeof(species), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (typeof(source) != "character") {
-    stop(paste("source type is", paste0(typeof(source), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "source type is", paste0(typeof(source), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (typeof(separator) != "character") {
-    stop(paste("separator type is", paste0(typeof(separator), "."), "It should be \"character\""))
+    stop(
+      paste(
+        "separator type is", paste0(typeof(separator), "."),
+        "It should be \"character\""
+      )
+    )
   }
   if (!is.numeric(max_terms)) {
-    stop(paste("max_terms type is", paste0(typeof(max_terms), "."), "It should be \"double\" or \"integer\""))
+    stop(
+      paste(
+        "max_terms type is", paste0(typeof(max_terms), "."),
+        "It should be \"double\" or \"integer\""
+      )
+    )
   }
 
   # Check if the given paths exist
-  if (!is_running_in_docker()) {
+  if (!rrundocker::is_running_in_docker()) {
     if (!file.exists(input_file_path)) {
       stop(paste("input_file_path:", input_file_path, "does not exist."))
     }
@@ -50,7 +83,8 @@ enrichmentAnalysis <- function(input_file_path, species, source, separator, max_
   # Obtain parent folder from input_file_path.
   parent_folder <- dirname(input_file_path)
 
-  # Obtain matrix name and file format from input_file_path to create the variable matrix_file
+  # Obtain matrix name and file format from input_file_path to create the
+  # variable matrix_file
   input_file_path_parts <- strsplit(basename(input_file_path), "\\.")[[1]]
   matrix_name <- input_file_path_parts[1]
   format <- input_file_path_parts[2] # Uses extension as an heuristic.
@@ -64,7 +98,7 @@ enrichmentAnalysis <- function(input_file_path, species, source, separator, max_
     ),
     additional_arguments = c(
       "Rscript /home/enrichment_analysis.R",
-      paste0("/scratch/",matrix_file),
+      paste0("/scratch/", matrix_file),
       species,
       source,
       separator,
