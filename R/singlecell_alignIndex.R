@@ -16,7 +16,7 @@
 #'  )
 #' }
 #' @export
-singlecell_alignIndex <- function(input_dir_path, genome_dir_path, bamsave="true"){
+singlecell_alignIndex <- function(input_dir_path, genome_dir_path, bamsave=TRUE){
 
   # Type checking.
   if (typeof(input_dir_path) != "character") {
@@ -25,8 +25,8 @@ singlecell_alignIndex <- function(input_dir_path, genome_dir_path, bamsave="true
   if (typeof(genome_dir_path) != "character") {
     stop(paste("genome_dir_path type is", paste0(typeof(genome_dir_path), "."), "It should be \"character\""))
   }
-  if (typeof(bamsave) != "character") {
-    stop(paste("bamsave type is", paste0(typeof(bamsave), "."), "It should be \"character\""))
+  if (typeof(bamsave) != "logical") {
+    stop(paste("bamsave type is", paste0(typeof(bamsave), "."), "It should be \"logical\""))
   }
 
   # Check if the paths in input exist
