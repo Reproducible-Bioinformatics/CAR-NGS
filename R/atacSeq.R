@@ -13,14 +13,13 @@
 #'
 #' @examples
 #' \dontrun{
-#'  atacSeq(
-#'     input_dir_path="/the/input/path",
-#'     genome_dir_path="/the/genome/path"
-#'  )
+#' atacSeq(
+#'   input_dir_path = "/the/input/path",
+#'   genome_dir_path = "/the/genome/path"
+#' )
 #' }
 #' @export
-atacSeq <- function(input_dir_path, genome_dir_path, nThreads=8){
-
+atacSeq <- function(input_dir_path, genome_dir_path, nThreads = 8) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
@@ -49,7 +48,7 @@ atacSeq <- function(input_dir_path, genome_dir_path, nThreads=8){
     volumes = list(
       c(input_dir_path, "/scratch"),
       c(genome_dir_path, "/genomes"),
-      c(paste0(input_dir_path,"/results"), "/scratch/results")
+      c(paste0(input_dir_path, "/results"), "/scratch/results")
     ),
     additional_arguments = c(
       "/home/script.sh",

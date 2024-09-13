@@ -15,31 +15,30 @@
 #' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' # Dense matrix analysis
-#'   singlecell_clustering(
-#'     input_file_path = "/the/input/file.csv",
-#'     bootstrap_percentage=0.1,
-#'     stability_threshold=0.8,
-#'     permutations=10,
-#'     separator=",",
-#'     resolution=0.8
-#'   )
+#' singlecell_clustering(
+#'   input_file_path = "/the/input/file.csv",
+#'   bootstrap_percentage = 0.1,
+#'   stability_threshold = 0.8,
+#'   permutations = 10,
+#'   separator = ",",
+#'   resolution = 0.8
+#' )
 #'
 #' # Dense matrix analysis
-#'   singlecell_clustering(
-#'     input_file_path = "/the/input/file.mtx",
-#'     bootstrap_percentage=0.1,
-#'     stability_threshold=0.8,
-#'     permutations=10,
-#'     genes_file="combined_filtered_with_sample_genes.tsv",
-#'     barcodes_file="combined_filtered_with_sample_barcodes.tsv",
-#'     resolution=0.8
-#'  )
-#'}
+#' singlecell_clustering(
+#'   input_file_path = "/the/input/file.mtx",
+#'   bootstrap_percentage = 0.1,
+#'   stability_threshold = 0.8,
+#'   permutations = 10,
+#'   genes_file = "combined_filtered_with_sample_genes.tsv",
+#'   barcodes_file = "combined_filtered_with_sample_barcodes.tsv",
+#'   resolution = 0.8
+#' )
+#' }
 #' @export
-singlecell_clustering <- function(input_file_path, bootstrap_percentage, stability_threshold, permutations, separator=NULL, genes_file=NULL, barcodes_file=NULL, resolution){
-
+singlecell_clustering <- function(input_file_path, bootstrap_percentage, stability_threshold, permutations, separator = NULL, genes_file = NULL, barcodes_file = NULL, resolution) {
   # Type checking.
   if (typeof(input_file_path) != "character") {
     stop(paste("input_file_path type is", paste0(typeof(input_file_path), "."), "It should be \"character\""))
@@ -57,13 +56,13 @@ singlecell_clustering <- function(input_file_path, bootstrap_percentage, stabili
     stop(paste("resolution type is", paste0(typeof(resolution), "."), "It should be \"double\" or \"integer\""))
   }
   if (!is.null(separator) && typeof(separator) != "character") {
-    stop(paste("separator type is", paste0(typeof(separator), "."),"It should be \"character\""))
+    stop(paste("separator type is", paste0(typeof(separator), "."), "It should be \"character\""))
   }
   if (!is.null(genes_file) && typeof(genes_file) != "character") {
-    stop(paste("genes_file type is", paste0(typeof(genes_file), "."),"It should be \"character\""))
+    stop(paste("genes_file type is", paste0(typeof(genes_file), "."), "It should be \"character\""))
   }
   if (!is.null(barcodes_file) && typeof(barcodes_file) != "character") {
-    stop(paste("barcodes_file type is", paste0(typeof(barcodes_file), "."),"It should be \"character\""))
+    stop(paste("barcodes_file type is", paste0(typeof(barcodes_file), "."), "It should be \"character\""))
   }
 
   # Check if the given paths exist
@@ -90,13 +89,13 @@ singlecell_clustering <- function(input_file_path, bootstrap_percentage, stabili
     ),
     additional_arguments = c(
       "Rscript /home/clustering.R",
-      paste0("/scratch/",matrix_file),
+      paste0("/scratch/", matrix_file),
       bootstrap_percentage,
       stability_threshold,
       permutations,
       separator,
-      paste0("/scratch/",genes_file),
-      paste0("/scratch/",barcodes_file),
+      paste0("/scratch/", genes_file),
+      paste0("/scratch/", barcodes_file),
       resolution
     )
   )

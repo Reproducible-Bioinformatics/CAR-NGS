@@ -10,18 +10,17 @@
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' cdsa(
 #'   input_dir_path = "/the/input/dir",
-#'   countmatrix_name="gene_count_matrix.csv",
-#'   metadata_name="Covariatesstat.csv",
-#'   reference_group="wt",
-#'   organism="Drosophilamelanogaster"
+#'   countmatrix_name = "gene_count_matrix.csv",
+#'   metadata_name = "Covariatesstat.csv",
+#'   reference_group = "wt",
+#'   organism = "Drosophilamelanogaster"
 #' )
-#'}
+#' }
 #' @export
-cdsa <- function(input_dir_path, countmatrix_name, metadata_name, reference_group, organism){
-
+cdsa <- function(input_dir_path, countmatrix_name, metadata_name, reference_group, organism) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))

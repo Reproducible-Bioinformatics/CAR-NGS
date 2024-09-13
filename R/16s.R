@@ -1,21 +1,23 @@
 #' 16s
 #'
-#' This function is used to do an analysis of genomic bacteria, checking if there is any genomic bacteria in a DNA sample and returning a html directory
+#' This function is used to do an analysis of genomic bacteria, checking if
+#' there is any genomic bacteria in a DNA sample and returning a html directory
 #'
-#' @param input_dir_path, a character string indicating the path of a directory containing the fatq files to be analyzed
+#' @param input_dir_path, a character string indicating the path of a directory
+#' containing the fatq files to be analyzed
 #' @author Luca Alessandri, Agata D'Onofrio
 #' @examples
 #' \dontrun{
-#' 16s(
-#'   input_dir_path = "/the/input/dir",
+#' sixteenS(
+#'   input_dir_path = "/the/input/dir"
 #' )
 #' }
 #' @export
-sixteenS <- function(input_dir_path){
-
+sixteenS <- function(input_dir_path) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
-    stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
+    stop(paste("input_dir_path type
+    is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
   }
 
   # Check if input_dir_path exists

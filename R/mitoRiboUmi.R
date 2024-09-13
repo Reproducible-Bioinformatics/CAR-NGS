@@ -12,26 +12,25 @@
 #'
 #' @return a pdf file called Ribo_mito.pdf
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' mitoRiboUmi(
 #'   input_file_path = "/the/input/file.csv",
 #'   separator = ",",
-#'   gtf.name="Homo_sapiens.GRCh38.112.gtf",
-#'   bio.type="protein_coding",
-#'   umiXgene=3
+#'   gtf.name = "Homo_sapiens.GRCh38.112.gtf",
+#'   bio.type = "protein_coding",
+#'   umiXgene = 3
 #' )
-#'}
+#' }
 #' @export
-mitoRiboUmi <- function(result_dir_path, input_file_path, separator, gtf.name, bio.type, umiXgene){
-
+mitoRiboUmi <- function(result_dir_path, input_file_path, separator, gtf.name, bio.type, umiXgene) {
   # Type checking.
   if (typeof(input_file_path) != "character") {
     stop(paste("input_file_path type is", paste0(typeof(input_file_path), "."), "It should be \"character\""))
   }
   if (typeof(separator) != "character") {
-    stop(paste("separator type is", paste0(typeof(separator), "."),"It should be \"character\""))
+    stop(paste("separator type is", paste0(typeof(separator), "."), "It should be \"character\""))
   }
-   if (typeof(gtf.name) != "character") {
+  if (typeof(gtf.name) != "character") {
     stop(paste("gtf.name type is", paste0(typeof(gtf.name), "."), "It should be \"character\""))
   }
   if (typeof(bio.type) != "character") {

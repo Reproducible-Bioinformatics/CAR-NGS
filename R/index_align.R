@@ -10,14 +10,13 @@
 #'
 #' @examples
 #' \dontrun{
-#'  index_align(
-#'     input_dir_path="/the/input/path",
-#'     genome_dir_path="/the/genome/path"
-#'  )
+#' index_align(
+#'   input_dir_path = "/the/input/path",
+#'   genome_dir_path = "/the/genome/path"
+#' )
 #' }
 #' @export
-index_align <- function(input_dir_path, genome_dir_path){
-
+index_align <- function(input_dir_path, genome_dir_path) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))

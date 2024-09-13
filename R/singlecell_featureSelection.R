@@ -15,31 +15,30 @@
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' # Dense matrix analysis
-#'   singlecell_featureSelection(
-#'     input_file_path = "/the/input/file.csv",
-#'     clustering_file = "combined_filtered_matrix_with_sample_clustering_stability.output.csv"
-#'     threshold=0,
-#'     log2fc=1,
-#'     pvalue=0.05,
-#'     separator=","
-#'   )
+#' singlecell_featureSelection(
+#'   input_file_path = "/the/input/file.csv",
+#'   clustering_file = "combined_filtered_matrix_with_sample_clustering_stability.output.csv",
+#'   threshold = 0,
+#'   log2fc = 1,
+#'   pvalue = 0.05,
+#'   separator = ","
+#' )
 #'
 #' # Dense matrix analysis
-#'   singlecell_featureSelection(
-#'     input_file_path = "/the/input/file.mtx",
-#'     clustering_file = "combined_filtered_matrix_with_sample_clustering_stability.output.csv"
-#'     threshold=0,
-#'     log2fc=1,
-#'     pvalue=0.05,
-#'     genes_file="combined_filtered_with_sample_genes.tsv",
-#'     barcodes_file="combined_filtered_with_sample_barcodes.tsv"
-#'  )
-#'}
+#' singlecell_featureSelection(
+#'   input_file_path = "/the/input/file.mtx",
+#'   clustering_file = "combined_filtered_matrix_with_sample_clustering_stability.output.csv",
+#'   threshold = 0,
+#'   log2fc = 1,
+#'   pvalue = 0.05,
+#'   genes_file = "combined_filtered_with_sample_genes.tsv",
+#'   barcodes_file = "combined_filtered_with_sample_barcodes.tsv"
+#' )
+#' }
 #' @export
-singlecell_featureSelection <- function(input_file_path, clustering_file, threshold, log2fc, pvalue, separator=NULL, genes_file=NULL, barcodes_file=NULL, heatmap=FALSE){
-
+singlecell_featureSelection <- function(input_file_path, clustering_file, threshold, log2fc, pvalue, separator = NULL, genes_file = NULL, barcodes_file = NULL, heatmap = FALSE) {
   # Type checking.
   if (typeof(input_file_path) != "character") {
     stop(paste("input_file_path type is", paste0(typeof(input_file_path), "."), "It should be \"character\""))
@@ -57,13 +56,13 @@ singlecell_featureSelection <- function(input_file_path, clustering_file, thresh
     stop(paste("pvalue type is", paste0(typeof(pvalue), "."), "It should be \"double\" or \"integer\""))
   }
   if (!is.null(separator) && typeof(separator) != "character") {
-    stop(paste("separator type is", paste0(typeof(separator), "."),"It should be \"character\""))
+    stop(paste("separator type is", paste0(typeof(separator), "."), "It should be \"character\""))
   }
   if (!is.null(genes_file) && typeof(genes_file) != "character") {
-    stop(paste("genes_file type is", paste0(typeof(genes_file), "."),"It should be \"character\""))
+    stop(paste("genes_file type is", paste0(typeof(genes_file), "."), "It should be \"character\""))
   }
   if (!is.null(barcodes_file) && typeof(barcodes_file) != "character") {
-    stop(paste("barcodes_file type is", paste0(typeof(barcodes_file), "."),"It should be \"character\""))
+    stop(paste("barcodes_file type is", paste0(typeof(barcodes_file), "."), "It should be \"character\""))
   }
   if (typeof(heatmap) != "logical") {
     stop(paste("heatmap type is", paste0(typeof(heatmap), "."), "It should be \"logical\""))
@@ -93,14 +92,14 @@ singlecell_featureSelection <- function(input_file_path, clustering_file, thresh
     ),
     additional_arguments = c(
       "Rscript /home/featureSelection.R",
-      paste0("/scratch/",matrix_file),
+      paste0("/scratch/", matrix_file),
       clustering_file,
       threshold,
       log2fc,
       pvalue,
       separator,
-      paste0("/scratch/",genes_file),
-      paste0("/scratch/",barcodes_file),
+      paste0("/scratch/", genes_file),
+      paste0("/scratch/", barcodes_file),
       heatmap
     )
   )

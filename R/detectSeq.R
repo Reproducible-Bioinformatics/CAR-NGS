@@ -12,17 +12,16 @@
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' detectSeq(
 #'   genome_dir_path = "/the/genome/dir",
 #'   output_dir_path = "/the/output/dir",
 #'   fastq_dir_path = "/the/fastq/dir",
-#'   threshold ="3"
+#'   threshold = "3"
 #' )
-#'}
+#' }
 #' @export
-detectSeq <- function(genome_dir_path, output_dir_path, fastq_dir_path, threshold, adapt1="AGATCGGAAGAGCACACGT", adapt2="AGATCGGAAGAGCGTCGTG"){
-
+detectSeq <- function(genome_dir_path, output_dir_path, fastq_dir_path, threshold, adapt1 = "AGATCGGAAGAGCACACGT", adapt2 = "AGATCGGAAGAGCGTCGTG") {
   # Type checking.
   if (typeof(genome_dir_path) != "character") {
     stop(paste("genome_dir_path type is", paste0(typeof(genome_dir_path), "."), "It should be \"character\""))

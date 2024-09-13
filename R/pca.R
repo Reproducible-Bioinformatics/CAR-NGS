@@ -9,16 +9,15 @@
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' pca(
 #'   input_dir_path = "/the/input/dir",
-#'   countmatrix_name="gene_count_matrix.csv",
-#'   metadata_name="Covariatesstat.csv"
+#'   countmatrix_name = "gene_count_matrix.csv",
+#'   metadata_name = "Covariatesstat.csv"
 #' )
-#'}
+#' }
 #' @export
-pca <- function(input_dir_path, countmatrix_name, metadata_name){
-
+pca <- function(input_dir_path, countmatrix_name, metadata_name) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))

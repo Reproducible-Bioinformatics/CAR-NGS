@@ -9,16 +9,15 @@
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' heatmap(
 #'   input_dir_path = "/the/input/dir",
-#'   countmatrix_name="filtered_count_matrix.csv",
-#'   metadata_name="Covariatesstat.csv"
+#'   countmatrix_name = "filtered_count_matrix.csv",
+#'   metadata_name = "Covariatesstat.csv"
 #' )
-#'}
+#' }
 #' @export
-heatmap <- function(input_dir_path, countmatrix_name, metadata_name){
-
+heatmap <- function(input_dir_path, countmatrix_name, metadata_name) {
   # Type checking.
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
