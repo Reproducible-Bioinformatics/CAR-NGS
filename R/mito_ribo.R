@@ -134,6 +134,9 @@ mito_ribo <- function(
   format <- input_file_path_parts[2] # Uses extension as an heuristic.
   matrix_file <- paste0(matrix_name, ".", format)
 
+  # Setting the separator as NULL for sparse matrix analysis
+  if (is.null(separator)) { separator = "NULL" }
+
   # Executing the docker job
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/singlecelldownstream:latest"),
