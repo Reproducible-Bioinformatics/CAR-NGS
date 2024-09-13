@@ -98,7 +98,7 @@ enrichment_analysis <- function(input_file_path,
     ),
     additional_arguments = c(
       "Rscript /home/enrichment_analysis.R",
-      paste0("/scratch/", matrix_file),
+      matrix_file,
       species,
       source,
       separator,
