@@ -89,9 +89,9 @@ modules <- function(input_dir_path,
 
   # Check if organisms is in supported organisms.
   supported_organisms <- list(
-    "Homo sapiens" = "Hs",
-    "Mus musculus" = "Mm",
-    "Drosophila melanogaster" = "Dm"
+    "Homosapiens" = "Hs",
+    "Musmusculus" = "Mm",
+    "Drosophilamelanogaster" = "Dm"
   )
   if (!(organism %in% names(supported_organisms))) {
     stop(
