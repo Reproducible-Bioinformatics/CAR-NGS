@@ -85,7 +85,9 @@ singlecell_featureSelection <- function(input_file_path, clustering_file, thresh
   matrix_file <- paste0(matrix_name, ".", format)
 
   # Setting the separator as NULL for sparse matrix analysis
-  if (is.null(separator)) { separator = "NULL" }
+  if (is.null(separator)) {
+    separator <- "NULL"
+  }
 
   # Executing the docker job
   rrundocker::run_in_docker(
