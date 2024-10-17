@@ -58,6 +58,7 @@ modules <- function(input_dir_path, organism, count_matrix, metadata_file, count
 
   # Check if input_dir_path exists
   if (!is_running_in_docker()) {
+  if (!rrundocker::is_running_in_docker()) {
     if (!dir.exists(input_dir_path)) {
       stop(paste("input_dir_path:", input_dir_path, "does not exist."))
     }
@@ -69,6 +70,7 @@ modules <- function(input_dir_path, organism, count_matrix, metadata_file, count
 
   # Executing the docker job
   run_in_docker(
+  rrundocker::run_in_docker(
     image_name = paste0("hedgelab/rnaseq_modules:image5"),
     volumes = list(
       c(input_dir_path, "/scratch")
