@@ -2,6 +2,41 @@
 modules <- function(input_dir_path, organism, count_matrix, metadata_file, count_sep=NULL, meta_sep=NULL){
 
  # Type checking.
+#' Modules
+#'
+#' The `modules` function runs an RNA-seq data processing pipeline inside a
+#' Docker container.
+#' It analyzes a gene expression count matrix and associated metadata to
+#' identify gene modules.
+#' The pipeline generates heatmaps, gene ontology (GO) analysis for biological
+#' processes, and outputs TPM-normalized counts for each gene module.
+#' The results are saved in the specified output directory.
+#'
+#' @param input_dir_path A character string specifying the path to the
+#' directory containing input files (count matrix and metadata).
+#' @param organism A character string specifying the organism. Supported values
+#' are "Homo sapiens", "Mus musculus", or "Drosophila melanogaster".
+#' @param count_matrix A character string specifying the name of the count
+#' matrix file.
+#' @param metadata_file A character string specifying the name of the metadata
+#' file.
+#' @param count_sep (Optional) A character string indicating the separator for
+#' the count matrix file (e.g., "tab", ",").
+#' @param meta_sep (Optional) A character string indicating the separator for
+#' the metadata file (e.g., "tab", ",").
+#'
+#' @return The function does not return any values directly. It saves results
+#' (heatmaps, GO analysis, and normalized counts) as files in the output
+#' directory.
+#' @examples
+#' \dontrun{
+#' modules(
+#'   "/path/to/input", "Homo sapiens", "counts.csv", "metadata.csv",
+#'   count_sep = ",", meta_sep = ","
+#' )
+#' }
+#'
+#' @export
   if (typeof(input_dir_path) != "character") {
     stop(paste("input_dir_path type is", paste0(typeof(input_dir_path), "."), "It should be \"character\""))
   }
