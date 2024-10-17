@@ -87,6 +87,23 @@ modules <- function(input_dir_path,
     ))
   }
 
+  # Check if organisms is in supported organisms.
+  supported_organisms <- list(
+    "Homo sapiens" = "Hs",
+    "Mus musculus" = "Mm",
+    "Drosophila melanogaster" = "Dm"
+  )
+  if (!(organism %in% names(supported_organisms))) {
+    stop(
+      paste(
+        "Invalid organism:",
+        organism,
+        "Supported values are:",
+        paste(names(supported_organisms), collapse = ", ")
+      )
+    )
+  }
+
   # Check if input_dir_path exists
   if (!rrundocker::is_running_in_docker()) {
     if (!dir.exists(input_dir_path)) {
