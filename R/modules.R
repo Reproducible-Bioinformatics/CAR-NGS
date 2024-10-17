@@ -93,6 +93,7 @@ modules <- function(input_dir_path,
     "Musmusculus" = "Mm",
     "Drosophilamelanogaster" = "Dm"
   )
+
   if (!(organism %in% names(supported_organisms))) {
     stop(
       paste(
