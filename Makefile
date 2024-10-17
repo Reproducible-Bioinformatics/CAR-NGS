@@ -18,9 +18,9 @@ clean:
 	rm -rf $(PKG_TAR) $(PKG_NAME).Rcheck
 
 check: build
-	R CMD check $(PKG_TAR)
+	$(R) CMD check $(PKG_TAR)
 
-build: clean document test
+build: format clean document test
 	$(R) CMD build .
 
 clean:
