@@ -11,7 +11,7 @@
 #' @param input_dir_path A character string specifying the path to the
 #' directory containing input files (count matrix and metadata).
 #' @param organism A character string specifying the organism. Supported values
-#' are "Homo sapiens", "Mus musculus", or "Drosophila melanogaster".
+#' are "Homosapiens", "Musmusculus", or "Drosophilamelanogaster".
 #' @param count_matrix A character string specifying the name of the count
 #' matrix file.
 #' @param metadata_file A character string specifying the name of the metadata
@@ -27,8 +27,12 @@
 #' @examples
 #' \dontrun{
 #' modules(
-#'   "/path/to/input", "Homo sapiens", "counts.csv", "metadata.csv",
-#'   count_sep = ",", meta_sep = ","
+#'   "/path/to/input", 
+#'   "Drosophilamelanogaster", 
+#'   "gene_count_matrix.csv", 
+#'   "Covariatesstat.csv",
+#'   count_sep = ",", 
+#'   meta_sep = ","
 #' )
 #' }
 #'
@@ -122,7 +126,7 @@ modules <- function(input_dir_path,
 
   # Executing the docker job
   rrundocker::run_in_docker(
-    image_name = paste0("hedgelab/rnaseq_modules:image5"),
+    image_name = paste0("repbioinfo/rnaseqbulkdownstreamunbias:latest"),
     volumes = list(
       c(input_dir_path, "/scratch")
     ),
