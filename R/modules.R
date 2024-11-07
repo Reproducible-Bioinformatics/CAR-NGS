@@ -126,7 +126,7 @@ modules <- function(input_dir_path,
 
   # Executing the docker job
   rrundocker::run_in_docker(
-    image_name = paste0("repbioinfo/rnaseqbulkdownstreamunbias:latest"),
+    image_name = "repbioinfo/rnaseqbulkdownstreamunbias:latest",
     volumes = list(
       c(input_dir_path, "/scratch")
     ),
