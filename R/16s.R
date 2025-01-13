@@ -1,10 +1,14 @@
+
 #' 16s
 #'
-#' This function is used to do an analysis of genomic bacteria, checking if
+#' @description This function is used to do an analysis of genomic bacteria, checking if
 #' there is any genomic bacteria in a DNA sample and returning a html directory
-#'
+#' $B{container(repbioinfo/qiime2023:latest,docker);
+#' command(/home/qiime_full.sh);
+#' volume($input_dir_path:/scratch)}
 #' @param input_dir_path, a character string indicating the path of a directory
 #' containing the fatq files to be analyzed
+#' $B{!;type(file)}
 #' @author Luca Alessandri, Agata D'Onofrio
 #' @examples
 #' \dontrun{
