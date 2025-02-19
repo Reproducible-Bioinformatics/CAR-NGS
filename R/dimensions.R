@@ -1,11 +1,17 @@
 #' Cells count table size.
 #'
-#' Counts row and columns of a counts table, and provides a dimensions.txt
+#' @description Counts row and columns of a counts table, and provides a dimensions.txt
 #' file inside result_dir_path.
-#'
+#' $B{container(docker.io/repbioinfo/r332.2017.01:latest,docker $matrix_name $format "$separator");
+#' command(Rscript /home/main.R);
+#' volume($result_dir_path:/data);
+#' volume($parent_folder:/scratch)}
 #' @param result_dir_path The path where to save the result file.
+#' $B{!;type(file)}
 #' @param input_file_path The path of the input file.
+#' $B{!;type(file)}
 #' @param separator The separator used in the count table.
+#' $B{!;type(text)}
 #' @author Luca Alessandri, Sebastian Bucatariu, Agata D'Onofrio
 #' @examples
 #' \dontrun{

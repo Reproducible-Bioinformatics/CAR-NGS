@@ -1,17 +1,27 @@
 #' Clustering and Stability Analysis Script
 #'
-#' This script is used for clustering cells and assessing the stability of the clusters using Seurat and bootstrapping, ensuring that the identified clusters are consistent and reliable.
+#' @description This script is used for clustering cells and assessing the stability of the clusters using Seurat and bootstrapping, ensuring that the identified clusters are consistent and reliable.
 #' It returns an output directory inside the parent_folder containing: a CSV file containing cluster assignments, UMAP coordinates, and stability scores for each cell,
 #' 2 UMAP plots (colored by cluster and stability scores) and a filtered matrix.
-#'
-#' @param input_file_path, a character string indicating the path of the count matrix file, which can be both dense (.csv/.txt) or sparse (.mtx)
-#' @param bootstrap_percentage, percentage of cells to remove in each bootstrap iteration
-#' @param stability_threshold, the minimum Jaccard Index value for a cluster to be considered stable
-#' @param permutations, the number of bootstrap iterations to perform
+#' $B{container(repbioinfo/singlecelldownstream:latest,docker);
+#' command(Rscript /home/clustering.R $/scratch/matrix_file $bootstrap_percentage $stability_threshold $permutations $separator $/scratch/genes_file $/scratch/barcodes_file $resolution);
+#' volume($parent_folder:/scratch)}
+#' @param input_file_path a character string indicating the path of the count matrix file, which can be both dense (.csv/.txt) or sparse (.mtx)
+#' $B{!;type(file)}
+#' @param bootstrap_percentage percentage of cells to remove in each bootstrap iteration
+#' $B{!;type(float)}
+#' @param stability_threshold the minimum Jaccard Index value for a cluster to be considered stable
+#' $B{!;type(float)}
+#' @param permutations the number of bootstrap iterations to perform
+#' $B{!;type(integer)}
 #' @param separator, separator used in the count table
+#' $B{!;type(text)}
 #' @param genes_file, a character string indicating the name of the genes name files necessary for the analysis of a sparse matrix ("*genes.tsv")
+#' $B{!;type(file)}
 #' @param barcodes_file, a character string indicating the name of the barcodes file necessary for the analysis of a sparse matrix ("*barcodes.tsv")
+#' $B{!;type(file)}
 #' @param resolution, the resolution parameter for Seurat clustering, which controls the granularity of the clusters
+#' $B{!;type(float)}
 #' @author Luca Alessandri, alessandri [dot] luca1991 [at] gmail [dot] com, University of Torino
 #'
 #' @examples

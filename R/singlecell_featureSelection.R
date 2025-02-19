@@ -1,17 +1,28 @@
 #' Feature Selection Script
 #'
-#' This script is used to identify differentially expressed (DE) genes using various statistical methods like ANOVA, MAST, and edgeR.
+#' @description This script is used to identify differentially expressed (DE) genes using various statistical methods like ANOVA, MAST, and edgeR.
 #' It returns an output directory inside the parent_folder containing: a CSV file containing DE gene results for each comparison, volcano plots and heatmaps.
-#'
-#' @param input_file_path, a character string indicating the path of the count matrix file, which can be both dense (.csv/.txt) or sparse (.mtx)
-#' @param clustering_file, a character string indicating the name of the CSV file containing the clustering results
-#' @param threshold, the stability threshold for filtering cells based on their stability score
-#' @param log2fc, thelog2 fold change threshold for identifying DE genes
-#' @param pvalue, the p-value threshold for identifying DE genes
-#' @param separator, separator used in the count table
-#' @param genes_file, a character string indicating the name of the genes name files necessary for the analysis of a sparse matrix ("*genes.tsv")
-#' @param barcodes_file, a character string indicating the name of the barcodes file necessary for the analysis of a sparse matrix ("*barcodes.tsv")
-#' @param heatmap, option to generate an heatmap
+#' $B{container(repbioinfo/singlecelldownstream:latest,docker);
+#' command(Rscript /home/featureSelection.R $matrix_file $clustering_file $threshold $log2fc $pvalue $separator $genes_file $barcodes_file $heatmap);
+#' volume($parent_folder:/scratch)}
+#' @param input_file_path a character string indicating the path of the count matrix file, which can be both dense (.csv/.txt) or sparse (.mtx)
+#' $B{!;type(file)}
+#' @param clustering_file a character string indicating the name of the CSV file containing the clustering results
+#' $B{!;type(file)}
+#' @param threshold the stability threshold for filtering cells based on their stability score
+#' $B{!;type(integer)}
+#' @param log2fc thelog2 fold change threshold for identifying DE genes
+#' $B{!;type(integer)}
+#' @param pvalue the p-value threshold for identifying DE genes
+#' $B{!;type(float)}
+#' @param separator separator used in the count table
+#' $B{!;type(text)}
+#' @param genes_file a character string indicating the name of the genes name files necessary for the analysis of a sparse matrix ("*genes.tsv")
+#' $B{!;type(file)}
+#' @param barcodes_file a character string indicating the name of the barcodes file necessary for the analysis of a sparse matrix ("*barcodes.tsv")
+#' $B{!;type(file)}
+#' @param heatmap option to generate an heatmap
+#' $B{!;type(boolean)}
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples

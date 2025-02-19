@@ -1,14 +1,21 @@
 #' DESeq2
 #'
-#' This function performs differential expression analysis and generates results such as differential expression tables and visualizations,
+#' @descritpion This function performs differential expression analysis and generates results such as differential expression tables and visualizations,
 #' it returns an output directory inside input_dir_path containing CSV files with differential expression results, named as DEG_<group>_vs_<reference_group>.csv,
 #' a filtered gene count matrix, and a venn diagram of significant genes.
-#'
+#' $B{container(repbioinfo/rnaseqstar_v2:latest,docker);
+#' command(Rscript /home/Deseq2.R $countmatrix_name $metadata_name $reference_group $organism);
+#' volume($input_dir_path:/scratch)}
 #' @param input_dir_path, a character string indicating the path of the directory containing the fastq files and the csv files obtained from the indexing
+#' $B{!;type(file)}
 #' @param countmatrix_name, name of the count matrix file obtained after the genome indexing
+#' $B{!;type(file)}
 #' @param metadata_name, name of the metadata file obtained after the genome indexing
+#' $B{!;type(file)}
 #' @param reference_group, name of the reference group inside the meetadata (wt, cpes,...)
+#' $B{!;type(text)}
 #' @param organism, name of the organism subject of the analysis. Supported organisms are: 'Homo sapiens', 'Mus musculus' or 'Drosophila melanogaster'
+#' $B{!;type(text)}
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples

@@ -1,14 +1,24 @@
 #' DetectSeq
 #'
-#' This function executes a genome-wide assessment of off-target effects associated with cytosine base editors (CBEs),
+#' @description This function executes a genome-wide assessment of off-target effects associated with cytosine base editors (CBEs),
 #' it returns BAM files, PMAT files, Log files, and Filtered Output Files (BED and WIG format files)
-#'
-#' @param genome_dir_path, a character string indicating the path of the directory containing the genome fasta file and, if already obtained, the genome index
-#' @param output_dir_path, a character string indicating the path of the directory in which the outputs will be saved
-#' @param fastq_dir_path, a character string indicating the path of the directory containing the fastq files
-#' @param threshold, the threshold value for filtering
+#' $B{container(repbioinfo/detectseq:latest,docker);
+#' command(/home/detectSeq.sh $threshold $adapt1 $adapt2);
+#' volume($genome_dir_path:/genome);
+#' volume($output_dir_path:/scratch);
+#' volume($fastq_dir_path:/scratch/raw.fastq:ro)}
+#' @param genome_dir_path a character string indicating the path of the directory containing the genome fasta file and, if already obtained, the genome index
+#' $B{!;type(file)}
+#' @param output_dir_path a character string indicating the path of the directory in which the outputs will be saved
+#' $B{!;type(file)}
+#' @param fastq_dir_path a character string indicating the path of the directory containing the fastq files
+#' $B{!;type(file)}
+#' @param threshold the threshold value for filtering
+#' $B{!;type(integer)}
 #' @param adapt1, optional adapter sequence with default set at "AGATCGGAAGAGCACACGT"
+#' $B{!;type(text)}
 #' @param adapt2, optional adapter sequence with default set at "AGATCGGAAGAGCGTCGTG"
+#' $B{!;type(text)}
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples

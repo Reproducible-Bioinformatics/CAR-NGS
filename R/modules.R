@@ -1,25 +1,33 @@
 #' Modules
 #'
-#' The `modules` function runs an RNA-seq data processing pipeline inside a
+#' @description The `modules` function runs an RNA-seq data processing pipeline inside a
 #' Docker container.
 #' It analyzes a gene expression count matrix and associated metadata to
 #' identify gene modules.
 #' The pipeline generates heatmaps, gene ontology (GO) analysis for biological
 #' processes, and outputs TPM-normalized counts for each gene module.
 #' The results are saved in the specified output directory.
-#'
+#' $B{container(repbioinfo/rnaseqbulkdownstreamunbias:latest,docker);
+#' command(Rscript /home/modules.R $organism $count_matrix $metadata_file $count_sep $meta_sep);
+#' volume($input_dir_path:/scratch)}
 #' @param input_dir_path A character string specifying the path to the
 #' directory containing input files (count matrix and metadata).
+#' $B{!;type(file)}
 #' @param organism A character string specifying the organism. Supported values
 #' are "Homosapiens", "Musmusculus", or "Drosophilamelanogaster".
+#' $B{!;type(text)}
 #' @param count_matrix A character string specifying the name of the count
 #' matrix file.
+#' $B{!;type(file)}
 #' @param metadata_file A character string specifying the name of the metadata
 #' file.
+#' $B{!;type(file)}
 #' @param count_sep (Optional) A character string indicating the separator for
 #' the count matrix file (e.g., "tab", ",").
+#' $B{!;type(text)}
 #' @param meta_sep (Optional) A character string indicating the separator for
 #' the metadata file (e.g., "tab", ",").
+#' $B{!;type(text)}
 #'
 #' @return The function does not return any values directly. It saves results
 #' (heatmaps, GO analysis, and normalized counts) as files in the output

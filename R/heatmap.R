@@ -1,11 +1,16 @@
 #' Heatmap
 #'
-#' This function generates heatmaps based on the filtered gene count matrix, visualizing the expression levels of significant genes across samples,
+#' @description This function generates heatmaps based on the filtered gene count matrix, visualizing the expression levels of significant genes across samples,
 #' it returns an output directory inside input_dir_path containing a heatmap of significant genes based on filtered data.
-#'
-#' @param input_dir_path, a character string indicating the path of the directory containing the fastq files and the csv files obtained from the indexing
-#' @param countmatrix_name, name of the filtered gene count matrix file obtained after running DESeq2
-#' @param metadata_name, name of the metadata file obtained after the genome indexing
+#' $B{container(repbioinfo/rnaseqstar_v2:latest,docker);
+#' command(Rscript /home/heatmap.R $countmatrix_name $metadata_name);
+#' volume($input_dir_path:/scratch)}
+#' @param input_dir_path a character string indicating the path of the directory containing the fastq files and the csv files obtained from the indexing
+#' $B{!;type(file)}
+#' @param countmatrix_name name of the filtered gene count matrix file obtained after running DESeq
+#' $B{!;type(file)}
+#' @param metadata_name name of the metadata file obtained after the genome indexing
+#' $B{!;type(file)}
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples
