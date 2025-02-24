@@ -1,16 +1,25 @@
 #' Index and Alignment Script for single cell analysis
 #'
-#' This script handles the alignment and indexing of the FASTQ files generated
-#' from single-cell RNA-seq experiments using Cell Ranger.
+#' @description This script handles the alignment and indexing of the FASTQ
+#' files generated from single-cell RNA-seq experiments using Cell Ranger.
 #' It returns a output directory inside input_dir_path containing aligned BAM
 #' files and combined matrix of counts.
+#' $B{
+#' container(repbioinfo/carncellranger2:latest,docker);
+#' command(/home/index_align.sh $bamsave);
+#' volume($input_dir_path:/scratch);
+#' volume($genome_dir_path:/genome)
+#' }
 #'
-#' @param input_dir_path, a character string indicating the path of a directory
+#' @param input_dir_path a character string indicating the path of a directory
 #' containing the fastq files to be analyzed
-#' @param genome_dir_path, a character string indicating the path of a directory
+#' $B{!;type(file)}
+#' @param genome_dir_path a character string indicating the path of a directory
 #' containing the fasta and gtf files of the genome to be analyzed
-#' @param bamsave, a boolean variable indicating if the BAM files are to be
-#' saved or not
+#' $B{!;type(file)}
+#' @param bamsave a boolean variable indicating if the BAM files are to be
+#' saved or not 
+#' $B{type(boolean);value(true)}
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples
@@ -48,7 +57,7 @@ singlecell_align_index <- function(
       )
     )
   }
-
+  
   # Check if the paths in input exist
   if (!rrundocker::is_running_in_docker()) {
     if (!dir.exists(input_dir_path)) {
@@ -58,7 +67,7 @@ singlecell_align_index <- function(
       stop(paste("genome_dir_path:", genome_dir_path, "does not exist."))
     }
   }
-
+  
   # Executing the docker job
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/carncellranger2:latest"),

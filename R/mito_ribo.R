@@ -1,27 +1,36 @@
 #' Mitochondrial and Riboomal Filtering Script
 #'
-#' This script is responsible for filtering cells based on their mitochondrial
+#' @descriptonThis script is responsible for filtering cells based on their mitochondrial
 #' and ribosomal gene content, providing quality control in single-cell RNA-seq
 #' experiments.
 #' It returns a filtered matrix excluding mitochondrial and ribosomal genes
 #' inside the parent_folder and a plot of mitochondrial vs. ribosomal gene
 #' expression as a PNG file.
-#'
-#' @param input_file_path, a character string indicating the path of the count
+#' $B{container(repbioinfo/singlecelldownstream:latest,docker $/scratch/matrix_file);
+#' command(Rscript/home/enrichment_analysis.R $matrix_file $species $source $separator $max_terms $mito_min $mito_max $ribo_min $ribo_max $/scratch/genes_file $/scratch/barcodes_file);
+#' volume($parent_folder:/scratch)}
+#' @param input_file_path a character string indicating the path of the count
 #' matrix file, which can be both dense (.csv/.txt) or sparse (.mtx)
+#' $B{!;type(file)}
 #' @param mitoMin, start range for mitochondrial percentage, cells within the
 #' range are retained
-#' @param mitoMax, end range for mitochondrial percentage, cells within the
+#' $B{!;type(integer)}
+#' @param mitoMax end range for mitochondrial percentage, cells within the
 #' range are retained
-#' @param riboMin, start range for ribosomal percentage, cells within the range
+#' @param riboMin start range for ribosomal percentage, cells within the range
 #' are retained
-#' @param riboMax, end range for ribosomal percentage, cells within the range
+#' $B{!;type(integer)}
+#' @param riboMax end range for ribosomal percentage, cells within the range
 #' are retained
-#' @param separator, separator used in the count table
-#' @param genes_file, a character string indicating the path of the genes name
+#' $B{!;type(integer)}
+#' @param separator separator used in the count table
+#' $B{!;type(text)}
+#' @param genes_file a character string indicating the path of the genes name
 #' files necessary for the analysis of a sparse matrix ("*genes.tsv")
-#' @param barcodes_file, a character string indicating the path of the barcodes
+#' $B{!;type(file)}
+#' @param barcodes_file a character string indicating the path of the barcodes
 #' file necessary for the analysis of a sparse matrix ("*barcodes.tsv")
+#' $B{!;type(file)}
 #' @author Luca Alessandri
 #'
 #' @examples

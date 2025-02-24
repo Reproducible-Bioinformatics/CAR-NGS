@@ -1,14 +1,22 @@
+
 #' Atac-seq
 #'
-#' This function is used to do a Assay for Transposase-Accessible Chromatin with high-throughput sequencing analysis,
+#' @description This function is used to do a Assay for Transposase-Accessible Chromatin with high-throughput sequencing analysis,
 #' it returns quality control files for each fastq (FastQC reports),
 #' BAM files containing aligned reads in BAM format,
 #' index files (.bai) for each BAM file,
 #' Peak Calling results and BigWig files
-#'
-#' @param input_dir_path, a character string indicating the path of a directory containing the fastq files to be analyzed
-#' @param genome_dir_path, a character string indicating the path of a directory containing the fasta files of the genome to be analyzed
-#' @param nThreads, number of cores for parallelization
+#' $B{container(repbioinfo/atacseq:latest,docker);
+#' command(/home/script.sh $nThreads);
+#' volume($input_dir_path:/scratch);
+#' volume($genome_dir_path:/genomes);
+#' }
+#' @param input_dir_path a character string indicating the path of a directory containing the fastq files to be analyzed
+#' $B{!;type(file)}
+#' @param genome_dir_path a character string indicating the path of a directory containing the fasta files of the genome to be analyzed
+#'$B{!;type(file)}
+#' @param nThreads number of cores for parallelization
+#' $B{type(integer);value(8)}
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples

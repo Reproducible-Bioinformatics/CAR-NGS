@@ -1,17 +1,22 @@
 #' Enrichment Analysis Script
 #'
-#' This script processes the results of differential expression and performs
+#' @description This script processes the results of differential expression and performs
 #' pathway enrichment analysis.
+#' $B{container(repbioinfo/singlecelldownstream:latest,docker);
+#' command(Rscript/home/enrichment_analysis.R $matrix_file $species $source $separator $max_terms);
+#' volume($parent_folder:/scratch)}
 #' It returns a output directory inside parent_folder containing a PDF file
 #' containing a bar plot of the enriched terms.
-#'
-#' @param input_file_path, a character string indicating the path of a CSV file
-#' containing the results of differential expression analysis.
-#' @param species, a character string indicating the species that is being
-#' analyzed (e.g. "hsapiens", "mmusculus" or "dmelanogaster")
-#' @param source, a character sting indicating the source of enrichment analysis
-#' @param separator, separator used in the count table
-#' @param max_terms, the maximum number of enriched terms to display in the
+#' @param input_file_path a character string indicating the path of a CSV file containing the results of differential expression analysis.
+#' $B{!;type(file)}
+#' @param species a character string indicating the species that is being analyzed (e.g. "hsapiens", "mmusculus" or "dmelanogaster")
+#' $B{!;type(text)}
+#' @param source a character sting indicating the source of enrichment analysis
+#' $B{!;type(text)}
+#' @param separator separator used in the count table
+#' $B{!;type(text)}
+#' @param max_terms the maximum number of enriched terms to display in the
+#' $B{!;type(integer)}
 #' output plot
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
@@ -94,7 +99,7 @@ enrichment_analysis <- function(input_file_path,
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/singlecelldownstream:latest"),
     volumes = list(
-      c(parent_folder, "/scratch")
+      c(parent_folder "/scratch")
     ),
     additional_arguments = c(
       "Rscript /home/enrichment_analysis.R",

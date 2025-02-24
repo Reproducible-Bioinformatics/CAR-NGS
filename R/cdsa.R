@@ -1,12 +1,19 @@
 #' CompleteDownStreamAnalysis
 #'
-#' This function executes execute the complete downstream bulk RNA-Seq analysis pipeline
-#'
-#' @param input_dir_path, a character string indicating the path of the directory containing the fastq files and the csv files obtained from the indexing
-#' @param countmatrix_name, name of the count matrix file obtained after the genome indexing
-#' @param metadata_name, name of the metadata file obtained after the genome indexing
-#' @param reference_group, name of the reference group inside the meetadata (wt, cpes,...)
-#' @param organism, name of the organism subject of the analysis. Supported organisms are: 'Homo sapiens', 'Mus musculus' or 'Drosophila melanogaster'
+#' @descritpion This function executes execute the complete downstream bulk RNA-Seq analysis pipeline
+#' $B{container(repbioinfo/rnaseqstar_v2:latest,docker);
+#' command(Rscript /home/CompleteDownStreamAnalysis.R $countmatrix_name $metadata_name $reference_group $organism);
+#' volume($input_dir_path:/scratch)}
+#' @param input_dir_path a character string indicating the path of the directory containing the fastq files and the csv files obtained from the indexing
+#' $B{!;type(file)}
+#' @param countmatrix_name name of the count matrix file obtained after the genome indexing
+#' $B{!;type(file)}
+#' @param metadata_name name of the metadata file obtained after the genome indexing
+#' $B{!;type(file)}
+#' @param reference_group name of the reference group inside the meetadata (wt, cpes,...)
+#' $B{!;type(text)}
+#' @param organism, name of the organism subject of the analysis. Supported organisms are: 'Homo sapiens', 'Mus musculus' or 'Drosophila melanogaster
+#' $B{!;type(text)}
 #' @author Luca Alessandri, Agata D'Onofrio, Eliseo Martelli
 #'
 #' @examples

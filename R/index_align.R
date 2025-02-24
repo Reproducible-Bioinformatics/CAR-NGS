@@ -1,11 +1,16 @@
 #' Index and Alignment Script
 #'
-#' This script performs the alignment of RNA-Seq reads to the reference genome using STAR and generates a gene count matrix.
+#' @description This script performs the alignment of RNA-Seq reads to the reference genome using STAR and generates a gene count matrix.
 #' It returns a output directory containing aligned BAM files, gene_count_matrix.csv (gene count matrix)
 #' and Covariatesstat.csv (metadata file containing sample information)
-#'
+#' $B{container(repbioinfo/rnaseqstar_v2:latest,docker);
+#' command(/home/index_align.sh);
+#' volume($input_dir_path:/scratch);
+#' volume($genome_dir_path:/genome)}
 #' @param input_dir_path, a character string indicating the path of a directory containing the fastq files to be analyzed
+#' $B{!;type(file)}
 #' @param genome_dir_path, a character string indicating the path of a directory containing the fasta files of the genome to be analyzed
+#' $B{!;type(file)}
 #' @author Luca Alessandri, Agata D'Onofrio
 #'
 #' @examples
