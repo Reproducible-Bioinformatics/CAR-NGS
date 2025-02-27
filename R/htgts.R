@@ -105,13 +105,8 @@ htgts <- function(input_dir_path, fastq1_name, fastq2_name = NULL, expInfo_name,
     }
   }
 
-  # Executing the docker job
-  run_in_docker(
-    image_name = paste0("repbioinfo/htgts_pipeline_lts_v16:latest"),
-    volumes = list(
-      c(input_dir_path, "/Data")
-    ),
-    if (!is.null(fastq2_name)) {
+  # Checking if a second fastq file was provided
+  if (!is.null(fastq2_name)) {
       additional_arguments = c(
       "/Algorithm/HTGTS_Full.sh",
         paste0("-fastq1 /Data/", fastq1_name),
@@ -120,7 +115,7 @@ htgts <- function(input_dir_path, fastq1_name, fastq2_name = NULL, expInfo_name,
         paste0("-expInfo2 /Data/", expInfo2_name),
         paste0("-outDir /Data/", output_dir_name),
         paste("-configType", configType),
-        paste ("-assembly", assembly)
+        paste("-assembly", assembly)
         )
       }
     else {
@@ -133,6 +128,14 @@ htgts <- function(input_dir_path, fastq1_name, fastq2_name = NULL, expInfo_name,
         paste ("-assembly", assembly)
         )
       }
+
+  # Executing the docker job
+  run_in_docker(
+    image_name = paste0("repbioinfo/htgts_pipeline_lts_v16:latest"),
+    volumes = list(
+      c(input_dir_path, "/Data")
+    ),
+    additional_arguements
   )
 }
 
