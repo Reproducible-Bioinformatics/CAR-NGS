@@ -135,7 +135,7 @@ htgts <- function(input_dir_path, fastq1_name, fastq2_name = NULL, expInfo_name,
     volumes = list(
       c(input_dir_path, "/Data")
     ),
-    additional_arguements
+    additional_arguments
   )
 }
 
