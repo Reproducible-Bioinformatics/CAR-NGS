@@ -11,7 +11,7 @@ You can install the tool directly from GitHub using the following commands in R:
 ```r
 install.packages("devtools")
 library(devtools)
-install_github("https://github.com/Reproducible-Bioinformatics/CAR-NGS", ref="master")
+install_github("https://github.com/Reproducible-Bioinformatics/CAR-NGS", ref="main")
 ```
 
 Once installed, you can access and use the provided functions to interact with the CAR-NGS pipelines efficiently.
