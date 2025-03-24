@@ -99,7 +99,7 @@ enrichment_analysis <- function(input_file_path,
   rrundocker::run_in_docker(
     image_name = paste0("repbioinfo/singlecelldownstream:latest"),
     volumes = list(
-      c(parent_folder "/scratch")
+      c(parent_folder, "/scratch")
     ),
     additional_arguments = c(
       "Rscript /home/enrichment_analysis.R",
