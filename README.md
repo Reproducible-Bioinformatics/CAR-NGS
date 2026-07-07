@@ -16,6 +16,9 @@ install_github("https://github.com/Reproducible-Bioinformatics/CAR-NGS", ref="ma
 
 Once installed, you can access and use the provided functions to interact with the CAR-NGS pipelines efficiently.
 
+## Docker images
+Docker images, if not available online on the docker hub , are still downloadable here https://zenodo.org/records/20658630 
+
 ## 6S rRNA Gene Analysis (`sixteenS` function)
 
 The `sixteenS` function is an R-based frontend for executing the 16S rRNA gene sequencing analysis pipeline for microbial community profiling. This function simplifies execution by managing Docker commands directly from R, ensuring reproducibility and ease of use.
